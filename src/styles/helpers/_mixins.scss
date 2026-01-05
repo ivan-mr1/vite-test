@@ -1,0 +1,120 @@
+@use 'sass:math';
+@use 'functions' as *;
+
+@mixin fluid-text($max: 48, $min: 16) {
+  font-size: fluid($max, $min);
+}
+
+@mixin hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@mixin show {
+  visibility: visible;
+  opacity: 1;
+}
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  clip-path: inset(100%) !important;
+}
+
+// Миксин, который добавляет символ валюты после содержимого элемента
+@mixin currency($sym) {
+  &::after {
+    content: '#{$sym}';
+  }
+}
+
+//  создания треугольников с помощью CSS-бордеров
+@mixin triangle($direction, $color, $size, $size2: $size) {
+  @if $direction == left {
+    border: #{$size2}px solid transparent;
+    border-right: #{$size}px solid $color;
+  }
+
+  @if $direction == right {
+    border: #{$size2}px solid transparent;
+    border-left: #{$size}px solid $color;
+  }
+
+  @if $direction == top {
+    border: #{$size2}px solid transparent;
+    border-bottom: #{$size}px solid $color;
+  }
+
+  @if $direction == bottom {
+    border: #{$size2}px solid transparent;
+    border-top: #{$size}px solid $color;
+  }
+}
+
+// Grids
+@mixin grid-cards($type: fit, $min: 280px, $max: 1fr, $gap: 30px) {
+  display: grid;
+  grid-template-columns: repeat(auto-#{$type}, minmax($min, $max));
+  gap: $gap;
+}
+
+// Grid-контейнер
+@mixin grid-container(
+  $type: 0,
+  $container: settings.$maxWidthContainer,
+  $paddingStart: math.div(settings.$containerPadding, 2),
+  $paddingEnd: math.div(settings.$containerPadding, 2)
+) {
+  display: grid;
+  grid-template-columns:
+    #{$paddingStart}px 1fr minmax(auto, #{$container}px)
+    1fr #{$paddingEnd}px;
+  min-width: 0;
+
+  > * {
+    min-width: 0;
+
+    @if $type == 1 {
+      grid-column: 1 / 6;
+    } @else if $type == 2 {
+      grid-column: 2 / 5;
+    } @else if $type == 3 {
+      grid-column: 3 / 6;
+    } @else if $type == 4 {
+      grid-column: 1 / 4;
+    } @else if $type == 5 {
+      grid-column: 2 / 4;
+    } @else if $type == 6 {
+      grid-column: 3 / 5;
+    } @else {
+      grid-column: 3 / 4;
+    }
+  }
+}
+
+@mixin orange-before {
+  &::before {
+    --size: #{rem(36)};
+
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -25%;
+    left: 0;
+    background: var(--second-color);
+    border-radius: 100%;
+
+    @include square(var(--size));
+  }
+}

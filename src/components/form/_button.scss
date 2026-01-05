@@ -1,0 +1,65 @@
+@use '../../styles/helpers/' as *;
+
+%btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition);
+
+  &:active {
+    scale: 1.05;
+  }
+
+  @include hover {
+    color: var(--color-orange);
+    border: 1px solid var(--color-orange);
+  }
+
+  // @media (max-width: em(375)) {
+  //   width: 100%;
+  // }
+}
+
+.button {
+  padding-block: rem(12);
+  padding-inline: rem(25);
+  font-weight: 600;
+  color: var(--color-white);
+  background-color: transparent;
+  border: 1px solid var(--color-white);
+  border-radius: var(--border-radius);
+
+  @extend %btn;
+
+  &--min {
+    padding-block: rem(10);
+    padding-inline: rem(20);
+    color: var(--color-black);
+    border: 1px solid var(--color-orange);
+
+    @include hover {
+      color: var(--color-black);
+      background-color: var(--color-orange);
+    }
+  }
+
+  &--card {
+    padding: fluid(12, 10);
+    color: var(--color-black);
+    border: 1px solid var(--color-orange);
+
+    &.is-in-cart {
+      color: var(--color-black);
+      background-color: var(--color-orange);
+      cursor: default;
+    }
+
+    @include hover {
+      &:not(.is-in-cart) {
+        color: var(--color-black);
+        background-color: var(--color-orange);
+      }
+    }
+  }
+}

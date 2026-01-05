@@ -1,0 +1,41 @@
+@use '../../styles/helpers/' as *;
+
+.image-label {
+  position: relative;
+
+  &__label {
+    position: absolute;
+    z-index: 10;
+    top: 55px;
+    left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 250px;
+    font-size: 38px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-image: url('../assets/img/icons/star.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+}
+
+/* 
+<div class="hero__image image-label">
+  <img
+    class="hero__img image-label__img"
+    src="assets/img/"
+    alt="image"
+    width="469"
+    height="629"
+  />
+  <span class="image-label__label">45%</span>
+</div>
+*/

@@ -1,0 +1,55 @@
+// секция на всю высоту экрана
+// .hero {
+// position: relative;
+// display: flex;
+// min-height: 100vh;
+// padding-top: 0;
+
+// &\_\_container {
+// flex: 1 1 auto;
+// position: relative;
+// z-index: 2;
+// padding-top: fluid(200, 90);
+// padding-bottom: fluid(200, 40);
+// }
+
+// &\_\_image {
+// position: absolute;
+// top: 0;
+// left: 0;
+// width: 100%;
+// height: 100%;
+// background-color: #000000;
+
+// img {
+// position: absolute;
+// top: 0;
+// left: 0;
+// width: 100%;
+// height: 100%;
+// object-fit: cover;
+// object-position: 10% 70%;
+
+// @media (width <= 43.75em) {
+// opacity: 0.9;
+// object-position: 35%;
+// }
+// }
+// }
+// }
+
+/\*
+
+<section id="hero" class="page__hero hero">
+  <div class="hero__container">
+    <div class="hero__body">
+    </div>
+  </div>
+  <!-- <div class="hero__image">
+    <img src="assets/img/hero/2.webp" alt="cover">
+  </div> -->
+  <video class="video-bacground" autoplay muted loop>
+    <source type="video/mp4" src="assets/video/3.mp4">
+  </video>
+</section>
+*/

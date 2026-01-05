@@ -1,0 +1,55 @@
+@use '../helpers' as *;
+
+.footer {
+  @include adaptive-clamp('padding-top', 70, 25);
+  @include adaptive-clamp('padding-bottom', 70, 25);
+
+  &__header {
+    text-align: center;
+
+    &:not(:last-child) {
+      margin-bottom: rem(25);
+    }
+  }
+
+  &__title {
+    font-size: rem(24);
+    font-weight: 600;
+
+    &:not(:last-child) {
+      margin-bottom: rem(10);
+    }
+  }
+
+  &__text {
+    font-size: rem(18);
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: rem(25);
+
+    @media (max-width: em(479)) {
+      flex-direction: column;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: rem(13);
+
+    &:not(:last-child) {
+      margin-bottom: rem(20);
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+  }
+}

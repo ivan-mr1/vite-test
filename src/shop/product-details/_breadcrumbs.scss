@@ -1,0 +1,25 @@
+@use '../../styles/helpers/' as *;
+
+.breadcrumbs {
+  margin-bottom: rem(30);
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: rem(10);
+    color: var(--color-grey);
+  }
+
+  &__link {
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--color-dark);
+    }
+  }
+
+  &__current {
+    color: var(--color-dark);
+  }
+}

@@ -1,0 +1,29 @@
+%ic {
+  font-family: 'icons', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class*='_icon-'] {
+  &::before {
+    @extend %ic;
+  }
+}
+
+/* https://fontawesome.com/ */
+
+/* https://icomoon.io/ */
+
+/* при выгрузке из фигмы выделить иконку, перейди в object и нажать outline strock(ctrl+shift+o), потом экспортировать в формате svg, также удалить цвета иконок.
+потом очищаем цвет иконок. font name=icons, class=_icon- */
+
+/* создание иконочного шрифта подходит для простых одноцветных иконок */
+
+._icon-arrow-left::before {
+  content: '\e900';
+}

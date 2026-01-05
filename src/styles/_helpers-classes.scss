@@ -1,0 +1,38 @@
+@use 'helpers' as *;
+
+// .parallax {
+// 	width: 100%;
+// 	background: url('../assets/img/parallax.webp');
+// 	background-attachment: fixed;
+// 	background-position: center;
+// 	background-repeat: no-repeat;
+// 	background-size: cover;
+// 	min-height: 400px;
+// 	@media (max-width: 1024px) {
+// 		min-height: 300px;
+// 	}
+// }
+
+// .gradient-text {
+//   color: transparent;
+//   background: var(--gradient-color);
+//   background-clip: text; // можно использовать фото// обрезка фона, чтобы он соответствовал тексту// делаем текст прозрачным
+// }
+
+.video {
+  position: relative;
+  overflow: hidden;
+
+  // height: 0;
+  aspect-ratio: 16 / 9; // удалить здесь и задавать каждому отдельному изображению
+  video,
+  iframe,
+  object,
+  embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

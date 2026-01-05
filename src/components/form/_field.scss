@@ -1,0 +1,72 @@
+@use '../../styles/helpers/' as *;
+
+.field {
+  --field-color-label: #8e27ee;
+  --field-color-label-active: #ffffff;
+  --field-color-border: #c7c7c7;
+  --field-color-active: #9333ea;
+  --field-color-focus-bcg: #f5f5f5;
+
+  position: relative;
+
+  &:has(.field__input:not(:placeholder-shown)) .field__label {
+    // обращаемся к label только когда плейсхолдер не должен отображаться
+    color: var(--field-color-label-active);
+    scale: 0.7;
+    translate: -20px -54px; // надо подбирать
+  }
+
+  &__label {
+    position: absolute;
+    top: 50%;
+    left: 17px; //  как в макете
+    color: var(--field-color-label);
+    translate: 0 -50%;
+  }
+
+  &__input {
+    --field-input-padding-x: 16px; //  как в макете
+    --field-search-input-icon-size: 16px;
+
+    width: 100%;
+    height: 58px;
+    padding-inline: var(--field-input-padding-x);
+    background-color: transparent;
+    border: 1px solid var(--field-color-border);
+    border-radius: 8px;
+
+    &:hover,
+    &:focus {
+      color: var(--field-color-active);
+    }
+
+    &:focus {
+      background-color: var(--field-color-focus-bcg);
+      outline: none;
+    }
+
+    &[type='search'] {
+      &:placeholder-shown {
+        //  когда плейсхолдер на инпуте должен отображаться, отображаем иконку
+        padding-right: calc(
+          var(--field-input-padding-x) * 2 + var(--field-search-input-icon-size)
+        );
+        background-image: url('../assets/img/components/icon-search_black.svg');
+        background-position: calc(100% - var(--field-input-padding-x)) 50%;
+        background-size: var(--field-search-input-icon-size);
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}
+
+/* 
+<div class="field">
+  <label class="field__label" for="new-task">New task title</label>
+  <input class="field__input" id="new-task" placeholder=" " autocomplete="off">
+</div>
+<div class="field">
+  <label class="field__label" for="search-task">Search task</label>
+  <input class="field__input" id="search-task" placeholder=" " autocomplete="off" type="search">
+</div>
+*/

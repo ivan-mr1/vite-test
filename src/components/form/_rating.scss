@@ -1,0 +1,63 @@
+@use '../../styles/helpers/' as *;
+
+.simple-rating::before {
+  content: '★★★★★';
+  display: block;
+}
+
+.simple-rating {
+  --rating-hover: #ffef9f;
+  --rating-light: #ffd300;
+  --rating-dark: #986518;
+
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+
+  &__items {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row-reverse;
+
+    // width: 100%;
+    height: 100%;
+  }
+
+  &__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 0%;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &__label {
+    flex: 0 0 20%;
+    height: 100%;
+    color: var(--rating-light);
+    cursor: pointer;
+  }
+
+  &__label::before {
+    content: '★';
+    display: block;
+    transition: color 0.3s ease 0s;
+  }
+}
+
+.simple-rating__item:checked,
+.simple-rating__item:checked ~ .simple-rating__label {
+  /* применить стили ко всем следующим объектам */
+  color: var(--rating-dark);
+}
+
+.simple-rating__label:hover,
+.simple-rating__label:hover ~ .simple-rating__label,
+.simple-rating__label:checked ~ .simple-rating__label:hover {
+  color: var(--rating-hover);
+}

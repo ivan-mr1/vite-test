@@ -1,0 +1,26 @@
+@use '../../styles/helpers/' as *;
+
+//  иконка рядом с текстом
+.icon {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 8px;
+
+  &::before {
+    --size: 24px;
+
+    @include square(var(--size));
+
+    content: '';
+    flex-shrink: 0; // тк это флекс элемент, указываем, чтобы не сузился
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  &__logo {
+    &::before {
+      background-image: url('../assets/img/Logo.svg');
+    }
+  }
+}

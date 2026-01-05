@@ -1,0 +1,70 @@
+@use '../../styles/helpers/' as *;
+
+.hover-link {
+  position: relative;
+  transition: color 0.4s ease 0s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: rem(-3);
+    left: 0;
+    width: 0;
+    height: rem(2);
+    background-color: var(--hover-background);
+    transition: width 0.3s ease 0s;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--hover-color);
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+}
+
+/* 
+.hover-link2 {
+    //font-size: 17px;
+    //background: transparent;
+    //border: none;
+    padding: rem(13) rem(18);
+    position: relative;
+    transition: 0.5s ease;
+    &::before{
+        content:'';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background-color: var(--accent-color);
+        transition: 0.5s ease;
+    }
+    &::after{
+        content:'';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0;
+        width: 100%;
+        background-color: var(--accent-color);
+        transition: 0.4s ease;
+        z-index: -1;
+    }
+}  
+.hover-link2:hover {
+    color: var(--c-dark);
+    transition-delay: 0.5s;
+}  
+.hover-link2:hover::before {
+    width: 100%;
+}  
+.hover-link2:hover::after {
+    height: 100%;
+    transition-delay: 0.4s;
+    color: var(--accent-color);
+} */

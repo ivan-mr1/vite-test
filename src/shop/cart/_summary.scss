@@ -1,0 +1,67 @@
+@use './../../styles/helpers/' as *;
+
+.summary {
+  padding-block: 30px;
+  padding-inline: fluid(30, 10);
+  background: #f8f8f8;
+  border-radius: 12px;
+
+  &__title {
+    font-size: rem(18);
+    font-weight: 600;
+
+    &:not(:last-child) {
+      margin-bottom: rem(20);
+    }
+  }
+
+  &__conter-items {
+    font-weight: 600;
+  }
+
+  &__top {
+    border-bottom: 1px solid #888888;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #555555;
+  }
+
+  &__right {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  &__button {
+    width: 100%;
+    max-width: 290px;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__link-back {
+    display: block;
+
+    // text-align: center;
+
+    @include hover {
+      color: var(--color-orange);
+    }
+  }
+}

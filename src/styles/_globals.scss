@@ -1,0 +1,63 @@
+@use 'helpers' as *;
+
+body {
+  min-width: 320px;
+  font-family: var(--font-family-base), sans-serif;
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  line-height: var(--line-height);
+  color: var(--color-dark);
+  background-color: var(--color-bcg-body);
+
+  [data-scroll-lock] & {
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+}
+
+.wrapper {
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  > main {
+    flex: 1 1 auto;
+  }
+}
+
+a,
+article,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+  transition-duration: var(--transition-duration);
+}
+
+// :focus-visible {
+//   // в момент фокусировки с клавиатуры
+//   outline: rem(2) dashed var(--color-white);
+//   outline-offset: rem(4);
+//   transition-duration: 0s !important;
+// }
+
+// a,
+// button {
+//   &[aria-label] {
+//     position: relative;
+
+//     &::before {
+//       width: 44px;
+//       height: 44px;
+//       position: absolute;
+//       top: 50%;
+//       left: 50%;
+//       translate: -50% -50%;
+//       content: '';
+//     }
+//   }
+// }

@@ -1,0 +1,105 @@
+@use '../../styles/helpers/' as *;
+
+.tabs {
+  &__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+
+    @media (max-width: em(600)) {
+      gap: 0;
+    }
+  }
+
+  &__button {
+    padding: 12px 20px;
+    font-size: 12px;
+    line-height: 1.3;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+
+    &.is-active {
+      background-color: var(--color-active);
+      pointer-events: none;
+    }
+
+    @include hover {
+      background-color: var(--color-active);
+    }
+
+    @media (max-width: em(600)) {
+      padding: 12px 8px;
+    }
+  }
+
+  &__content {
+    &:not(.is-active) {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline-offset: 0.2rem;
+    }
+  }
+}
+
+/* 
+
+<div class="section__body tabs" data-js-tabs>
+  <header class="tabs__header">
+    <div class="tabs__buttons" role="tablist">
+      <button class="tabs__button is-active" id="tab-1" type="button" role="tab" aria-controls="tabpanel-1"
+        data-js-tabs-button aria-selected="true">
+        All tab header 1
+      </button>
+      <button class="tabs__button" id="tab-2" type="button" role="tab" aria-controls="tabpanel-2"
+        data-js-tabs-button aria-selected="false" tabindex="-1">
+        tab header 2
+      </button>
+      <button class="tabs__button" id="tab-3" type="button" role="tab" aria-controls="tabpanel-3"
+        data-js-tabs-button aria-selected="false" tabindex="-1">
+        tab header 3
+      </button>
+      <button class="tabs__button" id="tab-4" type="button" role="tab" aria-controls="tabpanel-4"
+        data-js-tabs-button aria-selected="false" tabindex="-1">
+        tab header 4
+      </button>
+      <button class="tabs__button" id="tab-5" type="button" role="tab" aria-controls="tabpanel-5"
+        data-js-tabs-button aria-selected="false" tabindex="-1">
+        tab header 5
+      </button>
+      <button class="tabs__button" id="tab-6" type="button" role="tab" aria-controls="tabpanel-6"
+        data-js-tabs-button aria-selected="false" tabindex="-1">
+        tab header 6
+      </button>
+    </div>
+  </header>
+  <div class="tabs__body">
+    <div class="tabs__content is-active" id="tabpanel-1" aria-labelledby="tab-1" tabindex="0"
+      data-js-tabs-content>
+    tab content 1
+    </div>
+    <div class="tabs__content" id="tabpanel-2" aria-labelledby="tab-2" tabindex="0" data-js-tabs-content>
+      tab content 2
+    </div>
+    <div class="tabs__content" id="tabpanel-3" aria-labelledby="tab-3" tabindex="0" data-js-tabs-content>
+      tab content 3
+    </div>
+    <div class="tabs__content" id="tabpanel-4" aria-labelledby="tab-4" tabindex="0" data-js-tabs-content>
+      tab content 4
+    </div>
+    <div class="tabs__content" id="tabpanel-5" aria-labelledby="tab-5" tabindex="0" data-js-tabs-content>
+      tab content 5
+    </div>
+    <div class="tabs__content" id="tabpanel-6" aria-labelledby="tab-6" tabindex="0" data-js-tabs-content>
+      tab content 6
+    </div>
+  </div>
+</div>
+
+*/

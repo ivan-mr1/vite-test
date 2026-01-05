@@ -1,0 +1,183 @@
+@use '../../styles/helpers/' as *;
+
+.hover-link {
+  position: relative;
+  transition: color 0.4s ease 0s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: rem(-3);
+    left: 0;
+    width: 0;
+    height: rem(2);
+    background-color: var(--hover-background);
+    transition: width 0.3s ease 0s;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: var(--hover-color);
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+}
+
+// ===================
+
+/* 
+.hover-link2 {
+    //font-size: 17px;
+    //background: transparent;
+    //border: none;
+    padding: rem(13) rem(18);
+    position: relative;
+    transition: 0.5s ease;
+    &::before{
+        content:'';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background-color: var(--accent-color);
+        transition: 0.5s ease;
+    }
+    &::after{
+        content:'';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 0;
+        width: 100%;
+        background-color: var(--accent-color);
+        transition: 0.4s ease;
+        z-index: -1;
+    }
+}  
+.hover-link2:hover {
+    color: var(--c-dark);
+    transition-delay: 0.5s;
+}  
+.hover-link2:hover::before {
+    width: 100%;
+}  
+.hover-link2:hover::after {
+    height: 100%;
+    transition-delay: 0.4s;
+    color: var(--accent-color);
+} */
+
+/* 
+.hover-img {
+    border-radius: rem(20);
+    overflow: hidden; 
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.07), 
+                0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease 0s;
+    @media (any-hover: hover) {
+        &:hover {
+            filter: grayscale(50%);
+        }
+    }
+} */
+
+/* 
+ .hover-scale-filter {
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    transition: all 0.3s ease 0s;    //error
+    @media (any-hover: hover) {
+        &:hover {
+            transform: scale(1.01);
+            filter: grayscale(30%);
+        }
+    }
+}  */
+
+/* 
+.hover-btn {
+    transition: all 0.3s ease 0s;
+    @media (any-hover: hover) {
+        &:hover {
+            transform: scale(1.06);
+        }
+    }
+} */
+// всплывающие подсказки при наведении
+// если родитель не div, задать display: block;
+// <div class="hover-prompt"><span>описание проекта</span><img src="assets/img/demo.jpg" alt="alt"></div>
+
+/* 
+.hover-prompt {
+    width: 300px;//
+    position: relative;
+    overflow: hidden;
+    span {
+        padding-top: 40px;//
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;        
+        text-align: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transform: scale(0) rotate(90deg);
+        transition: all 0.3s;
+    }
+    img {
+        // max-width: 100%;
+        // display: block;
+    }
+    @media (any-hover: hover){
+        &:hover span{
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+    }
+} */
+// ========================================
+// <div class="pulse"><img src="assets/img/instagram.svg" alt="button"></div>
+
+// ====================================
+
+/* 
+.border-decor {
+    position: relative;
+    span {
+        position: relative;
+        z-index: 2;
+    }
+    &::before{
+        content:'';
+        position: absolute;
+        top: 0;
+        left: rem(-10);
+        height: 100%;
+        width: 96%;
+        border: rem(5) solid #c2410c;
+        @media (max-width: em(991.98)){
+            left: rem(-7);
+            border: rem(3) solid #c2410c;
+        }
+        @media (max-width: em(991.98)){
+            left: rem(-5);
+            border: rem(2) solid #c2410c;
+        }
+    }
+}
+.bcg-decor {
+    position: relative;
+    span {
+        position: relative;
+        z-index: 2;
+    }
+} */

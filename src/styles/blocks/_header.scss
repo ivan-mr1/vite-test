@@ -1,0 +1,56 @@
+@use '../helpers' as *;
+@use '../../components/header/header-fon';
+@use '../../components/header/burger-2';
+@use '../../components/header/menu-header';
+
+.header {
+  position: fixed;
+  z-index: var(--z-index-header);
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include adaptive-clamp('column-gap', 40, 20);
+    @include adaptive-clamp('min-height', 100, 65);
+  }
+
+  &__overlay {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 1rem;
+  }
+
+  &__logo {
+    position: relative;
+    z-index: 5;
+    font-family: var(--second-family);
+    font-size: rem(32);
+    color: var(--color-light);
+    cursor: pointer;
+
+    @include hover {
+      color: var(--color-orange);
+    }
+  }
+
+  &__actions {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: rem(16);
+  }
+
+  &__action {
+    --size: #{rem(40)};
+
+    @include square(var(--size));
+  }
+}

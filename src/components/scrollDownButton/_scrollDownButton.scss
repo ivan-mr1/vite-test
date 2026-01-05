@@ -1,0 +1,66 @@
+@use '../../styles/helpers/' as *;
+
+.scroll-down-btn {
+  position: absolute;
+  z-index: 5;
+  bottom: 5vh;
+  left: 50%;
+  width: 44px;
+  height: 60px;
+  text-align: center;
+  transform: translateX(-50%);
+
+  @media (max-width: em(500)) {
+    bottom: 8vh;
+  }
+
+  svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+
+    path {
+      &.first-path {
+        animation: scrollanim 1s ease-in-out infinite;
+        animation-delay: 0.8s;
+      }
+
+      &.second-path {
+        animation: scrollanim2 1s ease-in-out infinite;
+      }
+    }
+  }
+}
+
+@keyframes scrollanim {
+  0% {
+    opacity: 0;
+    transform: translate(0, -40px);
+  }
+
+  60% {
+    opacity: 0.8;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes scrollanim2 {
+  0% {
+    opacity: 0;
+    transform: translate(0, -40px);
+  }
+
+  60% {
+    opacity: 0.6;
+    transform: translate(0, 0);
+  }
+}
+
+// .scroll-down-container {
+//   background: #191947;
+//   width: 100%;
+//   height: 100vh;
+//   position: relative;
+// }

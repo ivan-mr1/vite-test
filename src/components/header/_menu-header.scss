@@ -1,0 +1,74 @@
+@use '../../styles/helpers/' as *;
+
+.menu {
+  --menu-link: var(--color-light);
+  --menu-background: #1f2a32;
+  --menu-background-before: #1f2a32;
+
+  @media (max-width: em(767.98)) {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    overflow: auto;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-content: center;
+    gap: rem(25);
+    width: 100%;
+    height: 100%;
+    padding: rem(100) rem(15) rem(30);
+    background-color: var(--menu-background);
+    transition: left 0.3s;
+
+    &::before {
+      content: '';
+      position: fixed;
+      z-index: 2;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      background-color: var(--menu-background-before);
+      transition: left 0.3s;
+
+      @include adaptive-clamp('height', 80, 60);
+    }
+
+    &.is-active {
+      left: 0;
+
+      &::before {
+        left: 0;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: rem(10);
+
+    @include adaptive-clamp('column-gap', 30, 15);
+
+    @media (max-width: em(767.98)) {
+      flex-direction: column;
+      justify-content: center;
+      column-gap: rem(8);
+    }
+  }
+
+  &__item {
+    text-align: right;
+  }
+
+  &__link {
+    color: var(--menu-link);
+
+    @media (max-width: em(767.98)) {
+      display: inline-flex;
+      align-items: center;
+      height: 44px;
+      font-size: rem(26);
+    }
+  }
+}

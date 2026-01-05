@@ -1,0 +1,86 @@
+@use '../../styles/helpers/' as *;
+
+.burger-button {
+  --burger-button-color: #ffffff;
+  --burger-button-color-hover: #ff4646;
+  --burger-button-color-open: #449f4d;
+
+  display: none;
+
+  @media (max-width: em(767.98)) {
+    flex: 0 0 rem(45);
+    position: relative;
+    z-index: 5;
+    display: block;
+    inline-size: rem(45);
+    block-size: rem(45);
+    color: var(--burger-button-color);
+    background-color: transparent;
+    border: 1px solid var(--burger-button-color);
+    border-radius: 0.5rem;
+
+    @include hover {
+      color: var(--burger-button-color-hover);
+    }
+
+    &__line {
+      position: absolute;
+      width: 100%;
+      block-size: rem(4);
+      background-color: currentColor;
+      border-radius: 1rem;
+      transition-duration: var(--transition-duration);
+
+      &:first-child {
+        inline-size: rem(15);
+        inset-inline-start: rem(9);
+        inset-block-start: rem(12);
+      }
+
+      &:nth-child(2) {
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        transform: translate(-50%, -50%);
+        inline-size: rem(28);
+      }
+
+      &:last-child {
+        inline-size: rem(15);
+        inset-inline-end: rem(9);
+        inset-block-end: rem(12);
+      }
+    }
+
+    &.is-active {
+      border: 1px solid var(--burger-button-color-open);
+
+      .burger-button__line {
+        color: var(--burger-button-color-open);
+
+        &:nth-child(2) {
+          transform: translate(-50%, -50%) rotate(-45deg);
+          inline-size: rem(33);
+        }
+
+        &:first-child {
+          transform: translate(0, 2px) rotate(45deg);
+        }
+
+        &:last-child {
+          transform: translate(0, -2px) rotate(45deg);
+        }
+      }
+    }
+  }
+}
+
+/* 
+<button type="button" class="header__burger-button burger-button" data-js-header-burger-button
+  aria-label="Open menu" title="Open menu">
+  <span class="burger-button__inner">
+    <span class="burger-button__line"></span>
+    <span class="burger-button__line"></span>
+    <span class="burger-button__line"></span>
+  </span>
+</button>
+*/

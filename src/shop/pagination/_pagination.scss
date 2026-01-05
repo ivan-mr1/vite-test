@@ -1,0 +1,92 @@
+@use '../../styles/helpers/' as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-radius: 3px;
+
+  &__list {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__item,
+  &__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #fdfdfd;
+    border: 1px solid #e0dede;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover:not(.is-active, :disabled) {
+      background-color: #f0f0f0;
+      border-color: #cccccc;
+    }
+  }
+
+  &__item {
+    flex-shrink: 0;
+    width: 30px;
+
+    &.is-active {
+      color: #ffffff;
+      background-color: #000000;
+      border: 1px solid #000000;
+      cursor: default;
+    }
+  }
+
+  &__btn {
+    flex-shrink: 0;
+    width: 35px;
+
+    &:disabled {
+      background-color: #f5f5f5;
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__separator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 30px;
+    color: #999999;
+    user-select: none;
+  }
+}
+
+@media (width <= 370px) {
+  .pagination {
+    gap: 8px;
+
+    &__item,
+    &__btn {
+      width: 28px;
+      height: 28px;
+    }
+
+    &__btn {
+      width: 32px;
+    }
+  }
+}
+
+.is-hidden {
+  display: none !important;
+}

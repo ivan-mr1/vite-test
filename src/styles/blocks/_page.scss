@@ -1,0 +1,6 @@
+@use '../helpers' as *;
+
+[class*='page__']:not(.hero, .about) {
+  @include adaptive-clamp('padding-top', 40, 20);
+  @include adaptive-clamp('padding-bottom', 40, 20);
+}

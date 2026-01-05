@@ -1,0 +1,36 @@
+@use '../helpers' as *;
+
+.about {
+  @include adaptive-clamp('padding-bottom', 40, 20);
+
+  &__container {
+    @include adaptive-clamp('padding-top', 40, 20);
+  }
+
+  &__wrapper {
+    display: flex;
+
+    @include adaptive-clamp('column-gap', 70, 20);
+
+    @media (max-width: em(700)) {
+      flex-direction: column-reverse;
+      row-gap: rem(20);
+    }
+  }
+
+  &__image {
+    flex: 0 1 40%;
+    aspect-ratio: 400 / 400;
+  }
+
+  &__descr {
+    flex: 0 1 60%;
+    padding-top: rem(6);
+  }
+
+  &__header {
+    &:not(:last-child) {
+      margin-bottom: rem(25);
+    }
+  }
+}

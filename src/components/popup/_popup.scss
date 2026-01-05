@@ -1,0 +1,120 @@
+@use '../../styles/helpers/' as *;
+
+body::after {
+  content: '';
+  position: fixed;
+  z-index: var(--z-body-after);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.8s ease 0s;
+  pointer-events: none;
+}
+
+[data-popup-open] body::after {
+  opacity: 1;
+}
+
+[data-popup] {
+  position: fixed;
+  inset: 0;
+  padding: 30px 10px;
+  visibility: hidden;
+  transition: visibility 0.8s ease 0s;
+  pointer-events: none;
+
+  &[data-popup-active] {
+    z-index: var(--z-index-popup);
+    overflow: auto;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+[data-popup-active] [data-popup-body] {
+  visibility: visible;
+  transform: scale(1);
+}
+
+[data-popup-wrapper] {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+}
+
+[data-popup-body] {
+  width: 100%;
+  max-width: 900px;
+
+  // padding: 20px 5px;
+  background-color: #eeeeee;
+
+  // border-radius: 20px;
+  visibility: hidden;
+  transition:
+    transform 0.3s ease 0s,
+    visibility 0.3s ease 0s;
+  transform: scale(0);
+}
+
+[data-popup-close] {
+  position: fixed;
+  z-index: 5;
+  top: 15px;
+  right: 15px;
+  color: #ffffff;
+}
+
+[data-popup-youtube-place] iframe {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+/* 
+<div data-popup="popup-1" aria-hidden="true" class="popup">
+  <div data-popup-wrapper class="popup__wrapper">
+    <div data-popup-body class="popup__body">
+      <button
+        data-popup-close
+        type="button"
+        class="popup__close"
+        aria-label="Close popup"
+        title="Close popup"
+      >
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M30 10L10 30"
+            stroke="#181C29"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M10 10L30 30"
+            stroke="#181C29"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <div data-popup-content class="popup__content">
+        <!-- Контент -->
+      </div>
+    </div>
+  </div>
+</div>
+*/

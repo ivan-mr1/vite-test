@@ -1,0 +1,22 @@
+@use '../../styles/helpers/' as *;
+
+.products {
+  @include adaptive-clamp('padding-top', 120, 80);
+  @include adaptive-clamp('padding-bottom', 60, 20);
+
+  &__header {
+    &:not(:last-child) {
+      margin-bottom: rem(40);
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+@use './../../styles/helpers/' as *;
+
+.quantity {
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid #dddddd;
+  border-radius: rem(4);
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: rem(32);
+    height: rem(32);
+    font-size: rem(18);
+    background: transparent;
+    cursor: pointer;
+    transition: background-color var(--transition-duration);
+
+    &:disabled {
+      color: #cccccc;
+      background-color: #f9f9f9;
+      cursor: not-allowed;
+    }
+
+    @include hover {
+      &:not(:disabled) {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+
+  &__input {
+    appearance: textfield;
+    width: rem(45);
+    height: rem(32);
+    font-weight: 600;
+    text-align: center;
+    color: var(--color-dark);
+    background: transparent;
+    border: none;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      display: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

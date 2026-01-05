@@ -1,0 +1,38 @@
+@use 'helpers' as *;
+
+:root {
+  --scrollbar-width: 0rem;
+  --z-index-header: 50;
+  --z-index-scroll-up: 10;
+  --z-index-dropdown: 100;
+  --z-index-popup: 150;
+  --z-body-after: 149;
+
+  --font-family-base: 'Montserrat', sans-serif;
+  --font-family: 'Montserrat', sans-serif;
+  --second-family: 'Allura', sans-serif;
+
+  --container-width: #{rem(1200)};
+  --container-padding-x: #{rem(15)};
+  --transition-duration: 0.3s;
+
+  --font-size: #{rem(16)};
+  --font-weight: 400;
+  --line-height: 1.2;
+
+  --main-color: var(--color-dark);
+  --second-color: var(--color-orange);
+  --accent-color: var(--color-orange);
+  --hover-color: var(--color-orange);
+  --hover-background: var(--color-orange);
+  --scroll-up: var(--color-orange);
+
+  --color-white: #ffffff;
+  --color-dark: #000000;
+  --color-light: #fafaf5;
+  --color-orange: #ffa501;
+  --color-bcg-body: #f3f9ff;
+
+  --border: 1px solid var(--color-white);
+  --border-radius: #{rem(5)};
+}

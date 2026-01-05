@@ -1,0 +1,43 @@
+@use 'sass:math';
+
+//  Percent
+@function percent($px, $from: 100) {
+  $result: math.div($px, $from) * 100%;
+
+  @return $result;
+}
+
+//  REM
+@function rem($px, $current: 16) {
+  $result: math.div($px, $current) + rem;
+
+  @return $result;
+}
+
+//  EM
+@function em($px, $current: 16) {
+  $result: math.div($px, $current) + em;
+
+  @return $result;
+}
+
+@function fluid($max: 100, $min: 10) {
+  $maxViewportWidth: 1200;
+  $minViewportWidth: 320;
+
+  $maxSize: math.div($max, 16);
+  $minSize: math.div($min, 16);
+  $maxWidth: math.div($maxViewportWidth, 16);
+  $minWidth: math.div($minViewportWidth, 16);
+
+  $slope: math.div(($maxSize - $minSize), ($maxWidth - $minWidth));
+  $yAxisIntersection: -$minWidth * $slope + $minSize;
+
+  @return clamp(
+    #{$minSize * 1rem},
+    #{$yAxisIntersection * 1rem} + #{$slope * 100vw},
+    #{$maxSize * 1rem}
+  );
+}
+
+// обязательно передать размер контейнера в функцию fluid в каждом проекте

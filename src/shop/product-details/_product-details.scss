@@ -1,0 +1,112 @@
+@use '../../styles/helpers/' as *;
+
+.product-details {
+  @include adaptive-clamp('padding-top', 120, 100);
+  @include adaptive-clamp('padding-bottom', 80, 40);
+
+  &__wrapper {
+    display: grid;
+    gap: rem(30);
+
+    @include mobile-above {
+      grid-template-columns: percent(600, 1290) 1fr;
+      align-items: start;
+    }
+  }
+
+  &__image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background-color: #f5f5f5;
+    border-radius: rem(20);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+  }
+
+  &__title {
+    font-weight: 600;
+    color: var(--color-dark);
+
+    @include adaptive-clamp('font-size', 32, 24);
+  }
+
+  &__price {
+    font-weight: 600;
+    color: var(--color-orange);
+
+    @include adaptive-clamp('font-size', 24, 20);
+  }
+
+  &__description {
+    color: #666666;
+  }
+
+  &__article {
+    display: flex;
+    flex-direction: column;
+    gap: rem(10);
+    padding-top: rem(20);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(15);
+    margin-top: rem(20);
+  }
+
+  &__btn {
+    min-width: rem(200);
+    color: var(--color-orange);
+    border: 1px solid var(--color-orange);
+
+    &.is-in-cart {
+      color: var(--color-white);
+      background-color: var(--color-orange);
+      pointer-events: none;
+    }
+  }
+
+  &__favorite-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--color-orange);
+    background-color: var(--color-white);
+    border: 1px solid #eeeeee;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+
+    svg {
+      transition: transform 0.3s ease;
+    }
+
+    &.is-active {
+      color: var(--color-white);
+      background-color: var(--color-orange);
+      border-color: var(--color-orange);
+    }
+
+    @include hover {
+      transform: scale(1.1);
+
+      &:not(.is-active) {
+        background-color: #fff9f5;
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+@use '../../styles/helpers/' as *;
+
+// @keyframes move-cup {
+//   0% {
+//     transform: none;
+//   }
+
+//   100% {
+//     transform: translateY(-1.5rem);
+//   }
+// }
+// .hero__img{
+//   animation: move-cup 1.5s infinite alternate ease-in-out;
+// }
+
+// @keyframes move-cup-2 {
+//   0% {
+//     translate: 0 0;
+//     rotate: 0deg;
+//   }
+
+//   50% {
+//     translate: 0 -1.5rem;
+//     rotate: 5deg;
+//   }
+
+//   100% {
+//     translate: 0 0;
+//     rotate: 0deg;
+//   }
+// }
+// .hero__img {
+//   animation: move-cup-2 2s ease-in-out infinite;
+// }
+
+// @keyframes move-cup-3 {
+//   0% {
+//     transform: translateY(0) rotate(0deg);
+//   }
+
+//   25% {
+//     transform: translateY(-1rem) rotate(3deg);
+//   }
+
+//   50% {
+//     transform: translateY(-1.5rem) rotate(-3deg);
+//   }
+
+//   75% {
+//     transform: translateY(-1rem) rotate(3deg);
+//   }
+
+//   100% {
+//     transform: translateY(0) rotate(0deg);
+//   }
+// }
+
+// .hero__img {
+//   animation: move-cup-3 3s ease-in-out infinite;
+// }
+
+@keyframes move-cup-4 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  15% {
+    transform: translateY(-1.6rem) rotate(6deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  35% {
+    transform: translateY(-1.4rem) rotate(-5deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  50% {
+    transform: translateY(-1.2rem) rotate(3deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  65% {
+    transform: translateY(-0.8rem) rotate(-2deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  80% {
+    transform: translateY(-0.4rem) rotate(1deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  90% {
+    transform: translateY(0.1rem) rotate(1deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  95% {
+    transform: translateY(-0.05rem) rotate(-1deg);
+    animation-timing-function: ease-in-out;
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.hero__img {
+  transform-origin: center bottom;
+  animation: move-cup-4 3.5s infinite;
+}

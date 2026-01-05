@@ -1,0 +1,35 @@
+@use '../../styles/helpers/' as *;
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(15);
+  white-space: nowrap;
+
+  span {
+    font-size: fluid(28, 18);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &::before {
+    --size: #{fluid(54, 44)};
+
+    content: '';
+    flex-shrink: 0;
+    display: inline-block;
+    width: var(--size);
+    height: var(--size);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  &--insta::before {
+    background-image: url('../assets/img/fifthSection5/insta.svg');
+  }
+
+  &--phone::before {
+    background-image: url('../assets/img/fifthSection5/phone.svg');
+  }
+}

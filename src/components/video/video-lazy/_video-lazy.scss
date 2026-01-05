@@ -1,0 +1,31 @@
+@use '../../../styles/helpers/' as *;
+
+.video {
+  position: relative;
+
+  &__play {
+    // z-index: 5;
+    --size: #{rem(70)};
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    color: var(--color-white);
+    background-color: transparent;
+    border: none;
+
+    @include square(var(--size));
+
+    @include hover {
+      opacity: 0.7;
+    }
+
+    @include laptop {
+      --size: #{rem(50)};
+    }
+  }
+}

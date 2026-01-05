@@ -1,0 +1,66 @@
+@use '../../styles/helpers/' as *;
+
+.gallery {
+  overflow-y: hidden;
+
+  &__items {
+    @include adaptive-clamp('height', 1960, 850);
+  }
+
+  &__inner-container {
+    display: flex;
+    justify-content: space-between;
+    column-gap: 18px;
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    row-gap: 18px;
+    margin-top: 52px;
+
+    &--middle {
+      margin-top: 0;
+    }
+  }
+}
+
+// javascript
+.gallery__img {
+  opacity: 0;
+  transition: all 0.8s ease 0s;
+  transform: translate(0, 50%);
+}
+
+.animation-gallery {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* 
+<section class="page__gallery gallery" id="gallery">
+  <div class="gallery__container">
+    <div class="gallery__items">
+      <div class="gallery__inner-container">
+        <div class="gallery__column">
+          <img src="assets/img/galery/galery1.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery2.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery3.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery4.webp" alt="img" class="gallery__img" loading="lazy">
+        </div>
+        <div class="gallery__column gallery__column--middle">
+          <img src="assets/img/galery/galery5.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery6.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery7.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery8.webp" alt="img" class="gallery__img" loading="lazy">
+        </div>
+        <div class="gallery__column">
+          <img src="assets/img/galery/galery9.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery10.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery11.webp" alt="img" class="gallery__img" loading="lazy">
+          <img src="assets/img/galery/galery12.webp" alt="img" class="gallery__img" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section> */

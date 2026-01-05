@@ -1,0 +1,112 @@
+```
+.video-player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+
+  &__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    column-gap: 1rem;
+    padding: rem(30);
+    transition-duration: var(--transition-duration);
+
+    &--center {
+      justify-content: center;
+      align-items: center;
+    }
+
+    &:not(.is-active) {
+      @include hide;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        180deg,
+        rgba(20, 20, 20, 0) 44.27%,
+        #141414 100%
+      );
+    }
+
+    * {
+      position: relative;
+    }
+  }
+
+  &__play-button {
+    --size: #{rem(70)};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    color: var(--color-white);
+    background-color: transparent;
+    border: none;
+
+    @include square(var(--size));
+
+    @include hover {
+      color: var(--color-orange);
+    }
+
+    @include laptop {
+      --size: #{rem(50)};
+    }
+  }
+}
+
+/*
+<div class="video-player" data-video-player>
+  <video
+    class="video-player__video"
+    src="./assets/video/5.mp4"
+    poster="./assets/img/background_promo.webp"
+    data-video-player-video
+  ></video>
+  <div
+    class="video-player__panel is-active"
+    data-video-player-panel
+  >
+    <button
+      class="video-player__play-button pulse"
+      type="button"
+      aria-label="Play video"
+      title="Play video"
+      data-video-player-play-button
+    >
+      <svg
+        width="58"
+        height="58"
+        viewBox="0 0 58 58"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M0.5625 29C0.5625 13.2944 13.2944 0.5625 29 0.5625C44.7056 0.5625 57.4375 13.2944 57.4375 29C57.4375 44.7056 44.7056 57.4375 29 57.4375C13.2944 57.4375 0.5625 44.7056 0.5625 29ZM41.4663 26.1318C43.7167 27.382 43.7167 30.6183 41.4663 31.8685L25.1248 40.9471C22.9377 42.1621 20.25 40.5807 20.25 38.0788V19.9215C20.25 17.4196 22.9377 15.8381 25.1248 17.0531L41.4663 26.1318Z"
+          fill="white"
+        />
+      </svg>
+    </button>
+    <div class="video-player__duration">2.30 min</div>
+  </div>
+</div>
+*/
+
+```

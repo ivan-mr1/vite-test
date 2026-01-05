@@ -1,0 +1,89 @@
+@use '../../styles/helpers/' as *;
+
+.favorite {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  &__content {
+    position: absolute;
+    z-index: var(--z-index-dropdown);
+    top: 100%;
+    right: 0;
+    width: fluid(450, 300);
+    margin-top: 15px;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease,
+      visibility 0.3s;
+    transform: translateY(10px);
+    pointer-events: none;
+    will-change: opacity, transform;
+
+    @media (max-width: em(767.98)) {
+      position: fixed;
+      top: var(--header-height);
+      right: 10px;
+      left: 10px;
+      width: auto;
+      transform: translateY(10px);
+    }
+
+    .favorite.is-active & {
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+  }
+
+  &__list {
+    overflow-y: auto;
+    max-height: 400px;
+    padding: 10px 0;
+
+    // Стилизация скроллбара
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-orange);
+      border-radius: 10px;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-top: 1px solid #eaeaea;
+    border-radius: 0 0 8px 8px;
+  }
+
+  &__fullprice-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    color: #888888;
+  }
+
+  &__fullprice {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-dark);
+  }
+}

@@ -1,0 +1,41 @@
+@use '../../styles/helpers/' as *;
+
+.checkbox {
+  --checkbox-color-1: #999999;
+  --checkbox-color-2: #000000;
+
+  // flex-shrink: 0;
+  appearance: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--checkbox-color-1);
+  border-radius: 4px;
+
+  &:not(:checked) {
+    &::after {
+      opacity: 0;
+    }
+  }
+
+  &:checked {
+    background-color: var(--checkbox-color-2);
+    border-color: var(--checkbox-color-2);
+  }
+
+  &::after {
+    // галочка
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    background: url('../assets/img/components/icon-check_white.svg')
+      center/contain no-repeat;
+    translate: -50% -50%;
+  }
+}
+
+// <input class="checkbox" type="checkbox" />

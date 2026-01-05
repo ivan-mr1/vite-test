@@ -1,0 +1,23 @@
+@use '../../styles/helpers/' as *;
+
+.header::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 0 1rem 0 var(--color-orange);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.header.scroll::before {
+  opacity: 1;
+}
+
+.header.dark::before {
+  opacity: 1;
+}

@@ -1,0 +1,64 @@
+@use '../../styles/helpers/' as *;
+
+.spollers__title {
+  // font-size: rem(18);
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+
+  // padding: rem(10);
+  text-align-last: left;
+}
+
+.init .spollers__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.init .spollers__title::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: url('../assets/img/components/spoller.svg') center center
+    no-repeat;
+  transition: transform 0.5s;
+}
+
+.init .spollers__title.active::after {
+  transform: rotate(-180deg);
+}
+
+/* 
+add this markup to index.html
+<div data-spollers data-one-spoller class="spollers">
+    <div class="spollers__item">
+        <button tabindex="1" type="button" data-spoller class="spollers__title">обычный спойлер</button>
+        <div class="spollers__text"></div>
+    </div>
+    <div class="spollers__item">
+        <button tabindex="1" type="button" data-spoller class="spollers__title">обычный спойлер</button>
+        <div class="spollers__text"></div>
+    </div>
+</div>
+<div data-spollers="600, min" class="spollers">
+    <div class="spollers__item">
+        <button tabindex="1" type="button" data-spoller class="spollers__title">спойлер работает на экранах = 600px</button>
+        <div class="spollers__text"></div>
+    </div>
+</div>
+<div data-spollers="800, max" class="spollers">
+    <div class="spollers__item">
+        <button tabindex="1" type="button" data-spoller class="spollers__title">спойлер 2 работает на экранах = 800px</button>
+        <div class="spollers__text"></div>
+    </div>
+</div>
+
+    data-one-spoiler функция акордеона, может быть открыт только один спойлер из всех
+    data-spoilers пустой атрибут вешаем на родителя, если надо вывести спойлеры, которые будут работать на любом разрешении экрана
+    "button" data-spoiler вешаем пустой атрибут на кнопку заголовок открывания
+    data-spoilers="650,min" чтобы включался на экранах шире 650
+    data-spoilers="800,max" чтобы включался на экранах меньше 650
+*/
