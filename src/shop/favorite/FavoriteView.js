@@ -26,8 +26,8 @@ export default class FavoriteView {
     ariaBuy: I18N.ARIA_ADD_TO_CART,
     ariaProductLink: I18N.ARIA_PRODUCT_LINK,
     priceLabel: I18N.PRICE_LABEL,
-    iconTrash: `<svg class="svg svg--20" aria-hidden="true"><use xlink:href="#icon-monochrome-trash"></use></svg>`,
-    iconCart: `<svg class="svg svg--20" aria-hidden="true"><use xlink:href="#icon-monochrome-cart"></use></svg>`,
+    iconTrash: `<svg class="svg svg--20 icon-orange" aria-hidden="true"><use xlink:href="#sprite-trash"></use></svg>`,
+    iconCart: `<svg class="svg svg--20 icon-orange" aria-hidden="true"><use xlink:href="#sprite-cart"></use></svg>`,
   };
 
   constructor(options = {}) {

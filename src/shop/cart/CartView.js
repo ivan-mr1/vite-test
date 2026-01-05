@@ -36,8 +36,8 @@ export default class CartView {
     minusLabel: I18N.DECREASE_QUANTITY,
     plusLabel: I18N.INCREASE_QUANTITY,
     iconTrash: `
-      <svg class="svg svg--20">
-        <use xlink:href="#icon-monochrome-trash"></use>
+      <svg class="svg svg--20 icon-orange">
+        <use xlink:href="#sprite-trash"></use>
       </svg>
     `,
   };
