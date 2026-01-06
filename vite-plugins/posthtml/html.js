@@ -1,5 +1,5 @@
 import posthtml from 'posthtml';
-import posthtmBeautify from 'posthtml-beautify';
+// posthtml-beautify removed — formatting is handled by Prettier
 import prerenderHTML from './prerender.js';
 import templateConfig from '../../template.config.js';
 import fs from 'fs';
@@ -25,36 +25,7 @@ export const htmlPlugins = [
             `${templateConfig.server.path}assets/img/spritemap.svg`,
           );
         }
-        if (
-          templateConfig.html &&
-          templateConfig.html.beautify &&
-          templateConfig.html.beautify.enable
-        ) {
-          const render = await new Promise((resolve) => {
-            const output = {};
-            const plugins = [
-              posthtmBeautify({
-                rules: {
-                  indent: templateConfig.html.beautify.indent,
-                  blankLines: '',
-                  sortAttrs: true,
-                },
-              }),
-            ];
-            posthtml(plugins)
-              .process(content)
-              .catch((error) => {
-                output.error = error;
-                console.log(error);
-                resolve(output);
-              })
-              .then((result) => {
-                output.content = result?.html;
-                resolve(output);
-              });
-          });
-          content = render.content;
-        }
+        // HTML beautify disabled — Prettier handles formatting
         fs.writeFileSync(htmlFile, content, 'utf-8');
       });
     },

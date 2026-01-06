@@ -4,12 +4,7 @@
 export default {
   // минимальная конфигурация, используемая плагинами postHTML
   lang: 'ua',
-  html: {
-    beautify: {
-      enable: true,
-      indent: 'tab',
-    },
-  },
+  // HTML beautify removed — formatting is handled by Prettier
   // алиасы для include/fetch/replaceAliases
   aliases: {
     '@components': 'src/components',
