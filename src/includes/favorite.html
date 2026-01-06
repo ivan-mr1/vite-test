@@ -1,0 +1,33 @@
+<div data-favorite class="header__action header__favorite favorite">
+  <button
+    data-favorite-btn
+    type="button"
+    class="favorite-btn counter-icon"
+    aria-label="Open favorite"
+    title="Open favorite"
+  >
+    <span class="counter-icon__inner">
+      <svg class="svg svg--40 icon-orange">
+        <use href="#sprite-favorite"></use>
+      </svg>
+      <span data-favorite-counter class="counter-icon__count">0</span>
+    </span>
+  </button>
+  <div class="favorite__content">
+    <ul data-favorite-list class="favorite__list"></ul>
+    <div class="favorite__bottom">
+      <div class="favorite__fullprice-inner">
+        <span>Разом:</span>
+        <span class="favorite__fullprice">5680 грн</span>
+      </div>
+      <a
+        href="cart.html"
+        target="_blank"
+        rel="noopener"
+        class="favorite__btn button button--min"
+      >
+        Кошик
+      </a>
+    </div>
+  </div>
+</div>
