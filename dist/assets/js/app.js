@@ -29,7 +29,7 @@
   }
 })();
 function L() {
-  const n = document.querySelector('header');
+  const a = document.querySelector('header');
   document.addEventListener('click', (t) => {
     const e = t.target.closest('[data-goto]');
     if (!e) return;
@@ -37,51 +37,51 @@ function L() {
       i = document.querySelector(s);
     if (i) {
       t.preventDefault();
-      const o = n ? n.offsetHeight : 0,
+      const o = a ? a.offsetHeight : 0,
         l = i.getBoundingClientRect().top + window.scrollY - o;
       window.scrollTo({ top: l, behavior: 'smooth' });
     }
   });
 }
-let y = !0;
-const A = (n) => {
-    ((y = !1),
+let w = !0;
+const _ = (a) => {
+    ((w = !1),
       setTimeout(() => {
-        y = !0;
-      }, n));
+        w = !0;
+      }, a));
   },
   U = () => document.querySelectorAll('[data-right-padding]'),
   I = () => {
-    const n = window.innerWidth - document.body.clientWidth,
+    const a = window.innerWidth - document.body.clientWidth,
       t = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    return n / t + 'rem';
+    return a / t + 'rem';
   },
-  C = (n = '') => {
+  A = (a = '') => {
     (U().forEach((e) => {
-      e.style.paddingRight = n;
+      e.style.paddingRight = a;
     }),
-      (document.body.style.paddingRight = n));
+      (document.body.style.paddingRight = a));
   },
-  P = (n) => {
-    document.documentElement.style.setProperty('--scrollbar-width', n);
+  P = (a) => {
+    document.documentElement.style.setProperty('--scrollbar-width', a);
   },
   S = () => {
     document.documentElement.style.removeProperty('--scrollbar-width');
   },
-  O = (n = 500) => {
-    if (!y) return;
+  O = (a = 500) => {
+    if (!w) return;
     const t = I();
-    (C(t),
+    (A(t),
       P(t),
       document.documentElement.setAttribute('data-scroll-lock', ''),
-      A(n));
+      _(a));
   },
-  $ = (n = 500) => {
-    y &&
-      (C(''),
+  $ = (a = 500) => {
+    w &&
+      (A(''),
       S(),
       document.documentElement.removeAttribute('data-scroll-lock'),
-      A(n));
+      _(a));
   };
 class V {
   selectors = {
@@ -260,10 +260,10 @@ class D {
   }
 }
 function N() {
-  const n = document.querySelectorAll('.scroller');
+  const a = document.querySelectorAll('.scroller');
   window.matchMedia('(prefer-reduce-motion: reduce)').matches || t();
   function t() {
-    n.forEach((e) => {
+    a.forEach((e) => {
       e.setAttribute('data-animated', !0);
       const s = e.querySelector('.scroller__inner');
       Array.from(s.children).forEach((o) => {
@@ -281,7 +281,7 @@ const E = JSON.parse(
     FAVORITE_UPDATED: 'favorite:updated',
     FAVORITE_OPENED: 'favorite:opened',
   },
-  w = { CART: 'user_cart', FAVORITES: 'user_favorites' },
+  y = { CART: 'user_cart', FAVORITES: 'user_favorites' },
   f = { ACTIVE: 'is-active', HIDDEN: 'is-hidden', IN_CART: 'is-in-cart' },
   c = {
     CURRENCY: 'грн',
@@ -352,10 +352,10 @@ const E = JSON.parse(
       NEXT: '[data-pagination-btn-next]',
     },
   },
-  k = { UA: 'uk-UA' },
-  B = new Intl.NumberFormat(k.UA),
-  b = (n) => B.format(n);
-class F {
+  B = { UA: 'uk-UA' },
+  k = new Intl.NumberFormat(B.UA),
+  b = (a) => k.format(a);
+class M {
   defaultSettings = {
     rootAttribute: p.PRODUCT_CARD.ROOT,
     rootClass: 'products__item',
@@ -415,11 +415,11 @@ class F {
         article: o,
         price: d,
       } = this.product,
-      { attrs: l, classes: a, i18n: r } = this,
+      { attrs: l, classes: n, i18n: r } = this,
       h = this.favStorage?.check(t),
       g = this.cartStorage?.check(t);
     return `
-      <article class="${a.productCard}" ${l.productId}="${t}">
+      <article class="${n.productCard}" ${l.productId}="${t}">
         <a href="/card.html?id=${t}" 
            target="_blank" 
            class="${this.settings.imageWrapperClass}" 
@@ -431,24 +431,24 @@ class F {
           <div class="product__actions">
             <button type="button" 
                     ${l.favoriteBtn} 
-                    class="${a.favoriteLink} ${h ? a.active : ''}" 
+                    class="${n.favoriteLink} ${h ? n.active : ''}" 
                     title="${h ? r.titleFavoriteRemove : r.titleFavorite}" 
                     aria-label="${r.titleFavorite}: ${s}"
                     aria-pressed="${h}">
               ${r.iconFavorite}
             </button>
           </div>
-          <a href="/card.html?id=${t}" target="_blank" class="${a.title}">${s}</a>
-          <div class="${a.descr}"><p>${i}</p></div>
-          <div class="${a.article}">${r.articlePrefix} ${o}</div>
-          <div class="${a.priceWrapper}">
-            <div ${l.price} class="${a.priceCurrent}">
+          <a href="/card.html?id=${t}" target="_blank" class="${n.title}">${s}</a>
+          <div class="${n.descr}"><p>${i}</p></div>
+          <div class="${n.article}">${r.articlePrefix} ${o}</div>
+          <div class="${n.priceWrapper}">
+            <div ${l.price} class="${n.priceCurrent}">
               ${b(d)} ${r.currency}
             </div>
           </div>
           <button type="button" 
                   ${l.buyBtn} 
-                  class="${a.buyBtn} ${g ? a.inCart : ''}" 
+                  class="${n.buyBtn} ${g ? n.inCart : ''}" 
                   title="${g ? r.ariaInCart : r.buy}"
                   aria-label="${g ? r.ariaInCart : r.ariaBuy}: ${s}">
             ${g ? r.inCart : r.buy}
@@ -527,7 +527,7 @@ class F {
       (this.subElements = {}));
   }
 }
-class M {
+class F {
   defaultSettings = { emptyClass: 'products__empty' };
   defaultI18n = { emptyMessage: c.PRODUCTS_NOT_FOUND };
   constructor(t, e = [], s = {}, i = {}) {
@@ -552,7 +552,7 @@ class M {
     }
     const e = document.createDocumentFragment();
     (t.forEach((s) => {
-      const i = new F(s, this.storage);
+      const i = new M(s, this.storage);
       (this.cards.push(i), e.append(i.render()));
     }),
       this.container.append(e));
@@ -660,9 +660,9 @@ class x {
       o = s - i,
       d = s + i;
     for (let l = 1; l <= t; l++) {
-      const a = l === 1 || l === t,
+      const n = l === 1 || l === t,
         r = l >= o && l <= d;
-      a || r
+      n || r
         ? e.append(this.#o(l))
         : l === o - 1 && l > 1
           ? e.append(this.#i())
@@ -807,7 +807,7 @@ class T {
     }
   }
 }
-class q {
+class H {
   selectors = {
     root: p.FAVORITE.DROPDOWN.ROOT,
     button: p.FAVORITE.DROPDOWN.BUTTON,
@@ -877,7 +877,7 @@ class R {
     return t.reduce((e, s) => e + s.totalItemPrice, 0);
   }
 }
-class Y {
+class q {
   defaultSelectors = {
     list: v.FAVORITE_LIST,
     totalPrice: '.favorite__fullprice',
@@ -900,10 +900,21 @@ class Y {
     ariaBuy: c.ARIA_ADD_TO_CART,
     ariaProductLink: c.ARIA_PRODUCT_LINK,
     priceLabel: c.PRICE_LABEL,
-    iconTrash:
-      '<svg class="svg svg--20 icon-orange" aria-hidden="true"><use xlink:href="#sprite-trash"></use></svg>',
-    iconCart:
-      '<svg class="svg svg--20 icon-orange" aria-hidden="true"><use xlink:href="#sprite-cart"></use></svg>',
+    iconTrash: `
+      <svg class="svg svg--20 icon-orange" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <path fill="#ffa501" d="M18.572 2.857h-5v-.714C13.572.959 12.612 0 11.429 0H8.572C7.388 0 6.429.96 6.429 2.143v.714h-5a.714.714 0 1 0 0 1.429h.776L3.572 19.35c.033.369.343.65.714.649h11.428c.37.002.681-.28.715-.65l1.366-15.064h.776a.714.714 0 1 0 0-1.429M7.857 2.143c0-.395.32-.714.715-.714h2.857c.394 0 .714.32.714.714v.714H7.857zm7.205 16.428H4.938L3.643 4.286H16.36z"/>
+        <path fill="#ffa501" d="M7.857 16.381v-.003l-.714-10a.716.716 0 0 0-1.429.101l.715 10a.714.714 0 0 0 .714.664h.051a.714.714 0 0 0 .663-.762M10 5.714a.714.714 0 0 0-.714.715v10a.714.714 0 1 0 1.428 0v-10A.714.714 0 0 0 10 5.714M13.622 5.714a.716.716 0 0 0-.765.664l-.714 10a.714.714 0 0 0 .66.764h.053c.376.002.688-.288.715-.663l.715-10a.716.716 0 0 0-.664-.765"/>
+      </svg>
+    `,
+    iconCart: `
+      <svg class="svg svg--20 icon-orange" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 35 29">
+        <path d="M26.1 19.9H7.9C5.3 19.9 3.7 18.1 3.3 16.3C3 15.2 0.7 7.1 0 4.9C-0.1 4.6 0.1 4.3 0.4 4.3H30V6.3H2.5C3.3 8.9 5 14.8 5.2 15.9C5.4 16.8 6.3 17.9 7.9 17.9H26.1V19.9Z" fill="#FFA501"/>
+        <path d="M24.6 24.8L23 23.7C23.2 23.4 23.4 23.1 23.5 22.7C24 21.2 27.5 8.8 29 3.5C29.5 1.4 31.3 0 33.5 0H34.7C34.8 0 35 0.2 35 0.3V1.6C35 1.8 34.8 2 34.7 2H33.5C32.3 2 31.2 2.8 30.9 4C29.4 9.3 25.9 21.8 25.4 23.4C25.2 23.9 24.9 24.4 24.6 24.8Z" fill="#FFA501"/>
+        <path d="M20.5 25H8.4V27H20.5V25Z" fill="#FFA501"/>
+        <path d="M6 29C4.3 29 3 27.6 3 26C3 24.3 4.4 23 6 23C7.7 23 9 24.4 9 26C9 27.6 7.7 29 6 29Z" fill="#FFA501"/>
+        <path d="M22.6 29C20.9 29 19.6 27.6 19.6 26C19.6 24.3 21 23 22.6 23C24.3 23 25.6 24.4 25.6 26C25.6 27.6 24.3 29 22.6 29Z" fill="#FFA501"/>
+      </svg>
+    `,
   };
   constructor(t = {}) {
     ((this.selectors = { ...this.defaultSelectors, ...t.selectors }),
@@ -930,38 +941,38 @@ class Y {
   getItemTemplate(t) {
     const { id: e, image: s, model: i, price: o, article: d } = t,
       l = this.selectors,
-      a = this.classes,
+      n = this.classes,
       r = this.i18n;
     return `
-      <li class="${a.item}">
-        <article class="${a.product}" ${l.productId}="${e}">
+      <li class="${n.item}">
+        <article class="${n.product}" ${l.productId}="${e}">
           <a href="/card.html?id=${e}" 
              target="_blank" 
-             class="${a.product}__image" 
+             class="${n.product}__image" 
              aria-label="${r.ariaProductLink} ${i}">
             <img src="${s}" alt="" width="80" height="80" loading="lazy" aria-hidden="true" />
           </a>
-          <div class="${a.product}__wrapper">
+          <div class="${n.product}__wrapper">
             <a href="/card.html?id=${e}" 
                target="_blank" 
-               class="${a.product}__title"
+               class="${n.product}__title"
                aria-label="${i}">${i}</a>
-            <div class="${a.product}__inner">
-              <div class="${a.product}__article" aria-label="${r.art}">${r.art} ${d}</div>
-              <div class="${a.product}__price" aria-label="${r.priceLabel}">${b(o)} ${r.currency}</div>
+            <div class="${n.product}__inner">
+              <div class="${n.product}__article" aria-label="${r.art}">${r.art} ${d}</div>
+              <div class="${n.product}__price" aria-label="${r.priceLabel}">${b(o)} ${r.currency}</div>
             </div>
           </div>
-          <div class="${a.product}__buttons">
+          <div class="${n.product}__buttons">
             <button type="button" 
                     ${l.btnRemove} 
-                    class="${a.product}__btn" 
+                    class="${n.product}__btn" 
                     title="${r.titleRemove}" 
                     aria-label="${r.ariaRemove}: ${i}">
               ${r.iconTrash}
             </button>
             <button type="button" 
                     ${l.btnBuy} 
-                    class="${a.product}__btn" 
+                    class="${n.product}__btn" 
                     title="${r.titleBuy}" 
                     aria-label="${r.ariaBuy}: ${i}">
               ${r.iconCart}
@@ -971,12 +982,12 @@ class Y {
       </li>`;
   }
 }
-class H {
+class Y {
   constructor(t, e, s) {
     ((this.storage = t),
       (this.cartStorage = s),
       (this.service = new R(e)),
-      (this.view = new Y()),
+      (this.view = new q()),
       this.view.container && this.init());
   }
   init() {
@@ -1004,7 +1015,7 @@ class H {
     });
   }
 }
-class _ {
+class C {
   constructor(t, e, s) {
     ((this.counters = document.querySelectorAll(t)),
       (this.storage = e),
@@ -1058,8 +1069,9 @@ class G {
     minusLabel: c.DECREASE_QUANTITY,
     plusLabel: c.INCREASE_QUANTITY,
     iconTrash: `
-      <svg class="svg svg--20 icon-orange">
-        <use xlink:href="#sprite-trash"></use>
+      <svg class="svg svg--20 icon-orange" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <path fill="#ffa501" d="M18.572 2.857h-5v-.714C13.572.959 12.612 0 11.429 0H8.572C7.388 0 6.429.96 6.429 2.143v.714h-5a.714.714 0 1 0 0 1.429h.776L3.572 19.35c.033.369.343.65.714.649h11.428c.37.002.681-.28.715-.65l1.366-15.064h.776a.714.714 0 1 0 0-1.429M7.857 2.143c0-.395.32-.714.715-.714h2.857c.394 0 .714.32.714.714v.714H7.857zm7.205 16.428H4.938L3.643 4.286H16.36z"/>
+        <path fill="#ffa501" d="M7.857 16.381v-.003l-.714-10a.716.716 0 0 0-1.429.101l.715 10a.714.714 0 0 0 .714.664h.051a.714.714 0 0 0 .663-.762M10 5.714a.714.714 0 0 0-.714.715v10a.714.714 0 1 0 1.428 0v-10A.714.714 0 0 0 10 5.714M13.622 5.714a.716.716 0 0 0-.765.664l-.714 10a.714.714 0 0 0 .66.764h.053c.376.002.688-.288.715-.663l.715-10a.716.716 0 0 0-.664-.765"/>
       </svg>
     `,
   };
@@ -1092,7 +1104,7 @@ class G {
   }
   getItemTemplate(t) {
     const { id: e, image: s, model: i, price: o, article: d, count: l } = t,
-      a = l <= (this.settings.minQuantity || 1),
+      n = l <= (this.settings.minQuantity || 1),
       r = l >= (this.settings.maxQuantity || 99),
       h = this.selectors,
       g = this.classes,
@@ -1122,7 +1134,7 @@ class G {
               type="button"
               ${h.btnMinus}
               class="${g.quantityBtn}"
-              ${a ? 'disabled' : ''}
+              ${n ? 'disabled' : ''}
               aria-label="${m.minusLabel}"
               title="${m.minusLabel}"
             >
@@ -1189,12 +1201,12 @@ class W {
       const d = o.target.closest(`[${t}]`);
       if (!d) return;
       const l = Number(d.getAttribute(t)),
-        a = o.target.closest(`[${e}]`),
+        n = o.target.closest(`[${e}]`),
         r = o.target.closest(`[${s}]`),
         h = o.target.closest(`[${i}]`);
-      if (!a && !r && !h) return;
+      if (!n && !r && !h) return;
       const g = this.storage.get().filter((m) => m === l).length;
-      a && g < this.settings.maxQuantity
+      n && g < this.settings.maxQuantity
         ? this.storage.add(l)
         : r && g > this.settings.minQuantity
           ? this.storage.removeOne(l)
@@ -1272,7 +1284,7 @@ class z {
         article: o,
         price: d,
       } = this.product,
-      { attrs: l, classes: a, i18n: r } = this,
+      { attrs: l, classes: n, i18n: r } = this,
       h = this.favStorage?.check(t),
       g = this.cartStorage?.check(t);
     return `
@@ -1280,28 +1292,28 @@ class z {
         <img src="${e}" alt="${s}" width="600" height="480">
       </div>
       <div class="${this.settings.infoWrapperClass}">
-        <h1 class="${a.title}">${s}</h1>
-        <div class="${a.price}">${b(d)} ${r.currency}</div>
+        <h1 class="${n.title}">${s}</h1>
+        <div class="${n.price}">${b(d)} ${r.currency}</div>
         
-        <div class="${a.description}">
+        <div class="${n.description}">
           <p>${i}</p>
         </div>
         
-        <div class="${a.article}">
+        <div class="${n.article}">
             ${r.articlePrefix} ${o}
         </div>
 
-        <div class="${a.actions}">
+        <div class="${n.actions}">
           <button type="button" 
             ${l.buyBtn} 
-            class="${a.buyBtn} ${g ? a.inCart : ''}"
+            class="${n.buyBtn} ${g ? n.inCart : ''}"
             title="${g ? r.ariaInCart : r.buy}">
             ${g ? r.inCart : r.buy}
           </button>
           
           <button type="button" 
             ${l.favoriteBtn} 
-            class="${a.favoriteBtn} ${h ? a.active : ''}"
+            class="${n.favoriteBtn} ${h ? n.active : ''}"
             aria-label="${h ? r.titleFavoriteRemove : r.titleFavorite}"
             title="${h ? r.titleFavoriteRemove : r.titleFavorite}">
             ${r.iconFavorite}
@@ -1368,16 +1380,16 @@ class z {
   }
 }
 function K() {
-  const n = new T(w.FAVORITES, u.FAVORITE_UPDATED),
-    t = new T(w.CART, u.CART_UPDATED);
-  new z(v.PRODUCT_DETAILS, E, { cart: t, favorite: n });
-  const e = new M(v.PRODUCT_CATALOG, E, { favorite: n, cart: t });
+  const a = new T(y.FAVORITES, u.FAVORITE_UPDATED),
+    t = new T(y.CART, u.CART_UPDATED);
+  new z(v.PRODUCT_DETAILS, E, { cart: t, favorite: a });
+  const e = new F(v.PRODUCT_CATALOG, E, { favorite: a, cart: t });
   (new x(e, E, { productsPerPage: 12, visibleRange: 2 }),
-    new q(),
-    new H(n, E, t),
+    new H(),
+    new Y(a, E, t),
     new W(t, E),
-    new _(v.FAVORITE_COUNTER, n, u.FAVORITE_UPDATED),
-    new _(v.CART_COUNTER, t, u.CART_UPDATED));
+    new C(v.FAVORITE_COUNTER, a, u.FAVORITE_UPDATED),
+    new C(v.CART_COUNTER, t, u.CART_UPDATED));
 }
 window.addEventListener('DOMContentLoaded', () => {
   (L(), new V(), new D(), N(), K());
