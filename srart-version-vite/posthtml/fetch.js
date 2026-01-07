@@ -1,57 +1,47 @@
 import isUrl from 'is-url';
 import { resolve as resolvePath } from 'node:path';
 import { readFile } from 'node:fs/promises';
-
-// Функция для fetch, которая автоматически парсит JSON или текст
 const ofetch = async (url, opts = {}) => {
   const res = await fetch(url, opts);
   const ct = res.headers.get ? res.headers.get('content-type') || '' : '';
   if (ct.includes('application/json')) {
-    return res.json(); // возвращаем объект JSON
+    return res.json();
   }
   const text = await res.text();
   try {
-    return JSON.parse(text); // пытаемся распарсить текст как JSON
+    return JSON.parse(text);
   } catch {
-    return text; // если не JSON, возвращаем как текст
+    return text;
   }
 };
-
 import posthtml from 'posthtml';
 import { defu as merge } from 'defu';
-
-// Создает простую функцию matcher для тегов
 const simpleMatcher = (tags) => {
   const tagList = tags.split(',').map((t) => t.trim());
-  return (node) => tagList.includes(node.tag); // проверка тега узла
+  return (node) => tagList.includes(node.tag);
 };
-
 import expressions from 'posthtml-expressions';
 import replaceAliases from './aliases.js';
 
-// Главный плагин PostHTML для тегов <fetch> или <remote>
 export default (options = {}) =>
   async (tree) => {
-    // Настройки по умолчанию
     options = {
-      ofetch: {}, // опции для fetch
-      attribute: 'url', // атрибут с URL
-      expressions: {}, // опции для posthtml-expressions
-      preserveTag: false, // сохранять ли тег после обработки
-      tags: ['fetch', 'remote'], // теги, которые обрабатываем
+      ofetch: {},
+      attribute: 'url',
+      expressions: {},
+      preserveTag: false,
+      tags: ['fetch', 'remote'],
       ...options,
     };
 
-    // Обрабатывает один узел <fetch>/<remote>
     const processNode = async (node) => {
       if (!node.attrs?.[options.attribute]) {
         return node;
-      } // если нет URL, ничего не делаем
+      }
 
       let url = options.ofetch.url || node.attrs[options.attribute];
-      let content = tree.render(node); // рендерим исходный контент узла
+      let content = tree.render(node);
 
-      // Обрабатываем "before" плагины перед fetch
       if (options.plugins?.before) {
         const beforePlugins = Array.isArray(options.plugins.before)
           ? options.plugins.before
@@ -61,7 +51,6 @@ export default (options = {}) =>
 
       let response;
       if (isUrl(url)) {
-        // Если URL внешний, делаем fetch
         try {
           response = await ofetch(url, options.ofetch);
           response = Array.isArray(response)
@@ -73,7 +62,6 @@ export default (options = {}) =>
           response = { body: undefined };
         }
       } else {
-        // Если локальный файл
         url = !url.startsWith('src') ? `src/${url}` : url;
         try {
           const filePath = resolvePath(url);
@@ -84,12 +72,11 @@ export default (options = {}) =>
           response = { body: undefined };
         }
       }
-
       let locals = {};
       if (response.body) {
         try {
-          locals.response = JSON.parse(response.body); // пробуем распарсить как JSON
-          locals.response = replaceAliases(locals.response); // заменяем алиасы
+          locals.response = JSON.parse(response.body);
+          locals.response = replaceAliases(locals.response);
           const expressionPlugin = expressions(
             merge(options.expressions, { locals }),
           );
@@ -97,10 +84,10 @@ export default (options = {}) =>
             await posthtml([expressionPlugin]).process(
               tree.render(node.content),
             )
-          ).html; // применяем выражения внутри узла
+          ).html;
         } catch (error) {
           console.error('Error processing expressions:', error);
-          content = tree.render(node.content); // если ошибка, оставляем оригинальный контент
+          content = tree.render(node.content);
         }
       } else {
         console.warn('No response body, using original content');
@@ -109,7 +96,6 @@ export default (options = {}) =>
 
       node.content = content;
 
-      // Обрабатываем "after" плагины после fetch
       if (options.plugins?.after) {
         const afterPlugins = Array.isArray(options.plugins.after)
           ? options.plugins.after
@@ -128,19 +114,18 @@ export default (options = {}) =>
       }
 
       if (!options.preserveTag) {
-        node.tag = false; // удаляем тег после обработки
+        node.tag = false;
       }
 
       return node;
     };
 
-    // Собираем все промисы для асинхронной обработки тегов
     const promises = [];
     tree.match(simpleMatcher(options.tags.join(',')), (node) => {
       promises.push(processNode(node));
       return node;
     });
 
-    await Promise.all(promises); // ждем обработки всех узлов
+    await Promise.all(promises);
     return tree;
   };

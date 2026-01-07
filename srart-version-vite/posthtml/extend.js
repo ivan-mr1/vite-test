@@ -7,38 +7,33 @@ import { match } from 'posthtml/lib/api';
 import merge from 'deepmerge';
 import replaceAliases from './aliases.js';
 
-// Ошибки для удобства
 const errors = {
   EXTENDS_NO_SRC: '<extends> has no "src"',
   BLOCK_NO_NAME: '<block> has no "name"',
   UNEXPECTED_BLOCK: 'Unexpected block "%s"',
 };
 
-// Основной плагин PostHTML для <extends>
 const extend =
   (options = {}) =>
   (tree) => {
-    // Устанавливаем опции по умолчанию
     options.encoding = options.encoding || 'utf8';
     options.root = options.root || './';
     options.plugins = options.plugins || [];
     options.strict = Object.prototype.hasOwnProperty.call(options, 'strict')
       ? Boolean(options.strict)
       : true;
-    options.slotTagName = options.slotTagName || 'block'; // тег для слотов
-    options.fillTagName = options.fillTagName || 'block'; // тег для подстановки контента
-    options.tagName = options.tagName || 'extends'; // тег для расширения
+    options.slotTagName = options.slotTagName || 'block';
+    options.fillTagName = options.fillTagName || 'block';
+    options.tagName = options.tagName || 'extends';
     options.expressions = options.expressions || { locals: {} };
 
-    // Обрабатываем все <extends> внутри дерева
     tree = handleExtendsNodes(tree, options, tree.messages);
 
-    // Преобразуем все блоки в окончательное состояние
     const blockNodes = getBlockNodes(options.slotTagName, tree);
     for (const blockName of Object.keys(blockNodes)) {
       const blockNodeList = blockNodes[blockName];
       for (const blockNode of blockNodeList) {
-        blockNode.tag = false; // убираем тег, оставляем только контент
+        blockNode.tag = false;
         blockNode.content = blockNode.content || [];
       }
       blockNodes[blockName] = blockNodeList;
@@ -47,21 +42,19 @@ const extend =
     return tree;
   };
 
-// Обрабатывает атрибуты узла, заменяя алиасы
 const processAttributes = (attrs, prependDot) => {
   let src = false;
   for (const [attr, value] of Object.entries(attrs || {})) {
     if (typeof value === 'string') {
-      attrs[attr] = replaceAliases(value, { prependDot }); // заменяем алиасы
+      attrs[attr] = replaceAliases(value, { prependDot });
       if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http')) {
-        src = attrs[attr]; // возвращаем путь для локальных ресурсов
+        src = attrs[attr];
       }
     }
   }
   return src;
 };
 
-// Рекурсивно обрабатывает все <extends> в дереве
 function handleExtendsNodes(tree, options, messages) {
   match.call(
     (tree = applyPluginsToTree(tree, options.plugins)),
@@ -71,18 +64,17 @@ function handleExtendsNodes(tree, options, messages) {
       extendsNode.attrs.src = processAttributes(extendsNode.attrs, prependDot);
 
       if (!extendsNode.attrs || !extendsNode.attrs.src) {
-        throw getError(errors.EXTENDS_NO_SRC); // проверка наличия src
+        throw getError(errors.EXTENDS_NO_SRC);
       }
       let locals = {};
       if (extendsNode.attrs.locals) {
         try {
-          locals = JSON.parse(extendsNode.attrs.locals); // читаем локальные переменные
+          locals = JSON.parse(extendsNode.attrs.locals);
         } catch {
           console.error('extend.js handleExtendsNodes');
         }
       }
 
-      // Подключаем expressions с локальными переменными
       const plugins = [
         ...options.plugins,
         expressions({
@@ -91,7 +83,6 @@ function handleExtendsNodes(tree, options, messages) {
         }),
       ];
 
-      // Читаем родительский HTML
       const layoutPath = path.resolve(options.root, extendsNode.attrs.src);
       const layoutHtml = fs.readFileSync(layoutPath, options.encoding);
       const layoutTree = handleExtendsNodes(
@@ -100,7 +91,6 @@ function handleExtendsNodes(tree, options, messages) {
         messages,
       );
 
-      // Объединяем контент родителя и дочернего узла
       extendsNode.tag = false;
       extendsNode.content = mergeExtendsAndLayout(
         layoutTree,
@@ -122,7 +112,6 @@ function handleExtendsNodes(tree, options, messages) {
   return tree;
 }
 
-// Применяет массив плагинов к дереву PostHTML
 function applyPluginsToTree(tree, plugins) {
   return plugins.reduce((tree, plugin) => {
     tree = plugin(tree);
@@ -130,7 +119,6 @@ function applyPluginsToTree(tree, plugins) {
   }, tree);
 }
 
-// Объединяет контент родительского шаблона и дочернего <extends>
 function mergeExtendsAndLayout(
   layoutTree,
   extendsNode,
@@ -146,7 +134,6 @@ function mergeExtendsAndLayout(
     if (!extendsBlockNodeList) {
       continue;
     }
-
     const extendsBlockNode =
       extendsBlockNodeList[extendsBlockNodeList.length - 1];
     if (!extendsBlockNode) {
@@ -159,22 +146,21 @@ function mergeExtendsAndLayout(
         extendsBlockNode.content,
         layoutBlockNode.content,
         getBlockType(extendsBlockNode),
-      ); // объединяем контент по типу блока
+      );
     }
 
-    delete extendsBlockNodes[layoutBlockName]; // удаляем обработанные блоки
+    delete extendsBlockNodes[layoutBlockName];
   }
 
   if (strictNames) {
     for (const extendsBlockName of Object.keys(extendsBlockNodes)) {
-      throw getError(errors.UNEXPECTED_BLOCK, extendsBlockName); // проверка на неожиданные блоки
+      throw getError(errors.UNEXPECTED_BLOCK, extendsBlockName);
     }
   }
 
   return layoutTree;
 }
 
-// Объединяет массивы контента в зависимости от типа блока (replace, prepend, append)
 function mergeContent(extendBlockContent, layoutBlockContent, extendBlockType) {
   extendBlockContent = extendBlockContent || [];
   layoutBlockContent = layoutBlockContent || [];
@@ -183,9 +169,11 @@ function mergeContent(extendBlockContent, layoutBlockContent, extendBlockType) {
     case 'replace':
       layoutBlockContent = extendBlockContent;
       break;
+
     case 'prepend':
       layoutBlockContent = extendBlockContent.concat(layoutBlockContent);
       break;
+
     case 'append':
       layoutBlockContent = layoutBlockContent.concat(extendBlockContent);
       break;
@@ -196,33 +184,31 @@ function mergeContent(extendBlockContent, layoutBlockContent, extendBlockType) {
   return layoutBlockContent;
 }
 
-// Определяет тип блока (replace, prepend, append)
 function getBlockType(blockNode) {
   let blockType = (blockNode.attrs && blockNode.attrs.type) || '';
   blockType = blockType.toLowerCase();
   if (!['replace', 'prepend', 'append'].includes(blockType)) {
     blockType = 'replace';
   }
+
   return blockType;
 }
 
-// Получает все блоки с указанным тегом из дерева
 function getBlockNodes(tag, content = []) {
   const blockNodes = {};
 
   match.call(content, { tag }, (node) => {
     if (!node.attrs || !node.attrs.name) {
-      throw getError(errors.BLOCK_NO_NAME); // проверка наличия имени блока
+      throw getError(errors.BLOCK_NO_NAME);
     }
 
-    appendBlockNode(blockNodes, node); // добавляем блок в коллекцию
+    appendBlockNode(blockNodes, node);
     return node;
   });
 
   return blockNodes;
 }
 
-// Добавляет блок в объект блоков по имени
 function appendBlockNode(blockNodes, node) {
   const { name } = node.attrs;
   if (blockNodes[name] === null) {
@@ -233,10 +219,9 @@ function appendBlockNode(blockNodes, node) {
   return blockNodes;
 }
 
-// Формирует объект ошибки с префиксом [posthtml-extend]
 function getError(...rest) {
   const message = format(...rest);
   return new Error('[posthtml-extend] ' + message);
 }
 
-export default extend; // экспорт плагина
+export default extend;
