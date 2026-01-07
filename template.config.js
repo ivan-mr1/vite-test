@@ -1,6 +1,4 @@
 export default {
-  lang: 'ua',
-  // алиасы для include/fetch/replaceAliases
   aliases: {
     '@components': 'src/components',
     '@includes': 'src/includes',
@@ -9,5 +7,6 @@ export default {
     '@fonts': 'src/assets/fonts',
     '@img': 'src/assets/img',
     '@video': 'src/assets/video',
+    '@shop': 'src/shop',
   },
 };

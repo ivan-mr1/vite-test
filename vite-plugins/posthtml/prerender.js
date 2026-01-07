@@ -3,9 +3,6 @@ import posthtmExpressions from 'posthtml-expressions';
 import posthtmlExtend from './extend.js';
 import posthtmlInclude from './include.js';
 import posthtmlFetch from './fetch.js';
-
-import logger from './logger.js';
-
 import { dirname } from 'path';
 
 const name = 'PostHTMLPreUse';
@@ -44,7 +41,7 @@ const plugin = (pluginOptions = {}) => {
     enforce: 'pre',
     transformIndexHtml: {
       order: 'pre',
-      handler: async (html, { filename, server }) => {
+      handler: async (html, { filename }) => {
         if (
           filename.replace('.html', '').endsWith('.json') &&
           html.startsWith('{')
@@ -90,7 +87,7 @@ const plugin = (pluginOptions = {}) => {
             .process(html, pluginOptions.options)
             .catch((error) => {
               output.error = error;
-              logger(`(!!)${error}`);
+              console.error(`(!!)${error}`);
               resolve(output);
             })
             .then((result) => {
