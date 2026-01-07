@@ -1,5 +1,3 @@
-import templateConfig from '../../template.config.js';
-
 import fs from 'fs';
 import path from 'path';
 import posthtml from 'posthtml';
@@ -20,16 +18,14 @@ export default (options = {}) => {
     tree.match = tree.match || match;
 
     tree.match({ attrs: true }, (node) => {
-      if (!node.attrs) return node;
+      if (!node.attrs) {
+        return node;
+      }
 
       const prependDot = false;
       const src = processAttributes(node.attrs, prependDot);
 
       if (node.tag === 'include' && src) {
-        // Normalize nested include paths: when includes are referenced as
-        // "includes/..." but current root already points to the includes
-        // folder (e.g. root endsWith 'includes'), avoid duplicating the
-        // segment (includes/includes/...).
         let resolvedSrc = src;
         try {
           const rootBase = path.basename(root || '');
@@ -40,7 +36,9 @@ export default (options = {}) => {
           ) {
             resolvedSrc = resolvedSrc.replace(/^includes\//, '');
           }
-        } catch (e) {}
+        } catch {
+          console.log('error include');
+        }
 
         const filePath = path.resolve(root, resolvedSrc);
 
@@ -60,7 +58,9 @@ export default (options = {}) => {
               ? { ...exprOptions.locals, ...localsJson }
               : localsJson;
           }
-        } catch {}
+        } catch {
+          console.log('error include 2');
+        }
 
         if (exprOptions.locals) {
           source = posthtml()
@@ -94,8 +94,9 @@ const processAttributes = (attrs, prependDot) => {
   for (const [attr, value] of Object.entries(attrs || {})) {
     if (typeof value === 'string') {
       attrs[attr] = replaceAliases(value, { prependDot });
-      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http'))
+      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http')) {
         src = attrs[attr];
+      }
     }
   }
   return src;

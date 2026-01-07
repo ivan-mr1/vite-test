@@ -5,7 +5,9 @@ import { readFile } from 'node:fs/promises';
 const ofetch = async (url, opts = {}) => {
   const res = await fetch(url, opts);
   const ct = res.headers.get ? res.headers.get('content-type') || '' : '';
-  if (ct.includes('application/json')) return res.json();
+  if (ct.includes('application/json')) {
+    return res.json();
+  }
   const text = await res.text();
   try {
     return JSON.parse(text);
@@ -22,7 +24,6 @@ const simpleMatcher = (tags) => {
 };
 import expressions from 'posthtml-expressions';
 import replaceAliases from './aliases.js';
-import { platform } from 'node:os';
 
 export default (options = {}) =>
   async (tree) => {

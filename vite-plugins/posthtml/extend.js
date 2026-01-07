@@ -47,8 +47,9 @@ const processAttributes = (attrs, prependDot) => {
   for (const [attr, value] of Object.entries(attrs || {})) {
     if (typeof value === 'string') {
       attrs[attr] = replaceAliases(value, { prependDot });
-      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http'))
+      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http')) {
         src = attrs[attr];
+      }
     }
   }
   return src;
@@ -69,7 +70,9 @@ function handleExtendsNodes(tree, options, messages) {
       if (extendsNode.attrs.locals) {
         try {
           locals = JSON.parse(extendsNode.attrs.locals);
-        } catch {}
+        } catch {
+          console.error('extend.js handleExtendsNodes');
+        }
       }
 
       const plugins = [
@@ -208,7 +211,7 @@ function getBlockNodes(tag, content = []) {
 
 function appendBlockNode(blockNodes, node) {
   const { name } = node.attrs;
-  if (blockNodes[name] == null) {
+  if (blockNodes[name] === null) {
     blockNodes[name] = [node];
   } else {
     blockNodes[name].push(node);

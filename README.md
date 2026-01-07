@@ -1,6 +1,6 @@
 # Optica shop
 
-- Deploy: [link](https://ivan-mr1.github.io/store-start/dist/)
+- Deploy: [link](https://ivan-mr1.github.io/)
 
 - Technologies: HTML, SCSS, Javascript, Vite, Eslint, Stylelint, Prettier
 

@@ -15,26 +15,14 @@
           </li>
         </ul>
         <div class="header__soc1al soc1al visible-mobile">
-          <include src="@includes/soc1al.html"></include>
+          <include src="@components/soc1al/soc1al.html"></include>
         </div>
       </nav>
       <div class="header__actions">
-        <include src="@includes/favorite.html"></include>
-        <a
-          href="cart.html"
-          class="header__action header__cart counter-icon"
-          aria-label="Open cart"
-          title="Open cart"
-        >
-          <span class="counter-icon__inner">
-            <svg class="svg svg--40 icon-orange">
-              <use href="#sprite-cart"></use>
-            </svg>
-            <span data-cart-counter class="counter-icon__count">0</span>
-          </span>
-        </a>
+        <include src="@shop/favorite/favorite.html"></include>
+        <include src="@shop/cart/cart-header.html"></include>
       </div>
     </div>
-    <include src="@includes/burger-button.html"></include>
+    <include src="@components/header/burger-button.html"></include>
   </div>
 </header>
