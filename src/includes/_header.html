@@ -1,0 +1,28 @@
+<header class="header" data-header data-right-padding>
+  <div class="header__container">
+    <a href="index.html" class="logo header__logo">Optica</a>
+    <div data-header-overlay class="header__overlay">
+      <nav class="header__menu menu" data-header-menu>
+        <ul class="menu__list">
+          <li class="menu__item">
+            <a href="#about" class="menu__link hover-link">ПРО НАС</a>
+          </li>
+          <li class="menu__item">
+            <a href="#products" class="menu__link hover-link">ПРОДУКТИ</a>
+          </li>
+          <li class="menu__item">
+            <a href="#footer" class="menu__link hover-link">КОНТАКТИ</a>
+          </li>
+        </ul>
+        <div class="header__soc1al soc1al visible-mobile">
+          <include src="@components/soc1al/_soc1al.html"></include>
+        </div>
+      </nav>
+      <div class="header__actions">
+        <include src="@shop/favorite/_favorite.html"></include>
+        <include src="@shop/cart/_cart-header.html"></include>
+      </div>
+    </div>
+    <include src="@components/header/_burger-button.html"></include>
+  </div>
+</header>

@@ -1,5 +1,4 @@
 'use strict';
-import 'virtual:svg-icons-register';
 import pageNavigation from './modules/pageNavigation';
 import Header from './../components/header/Header';
 import ScrollUpButton from '../components/scrollUpButton/ScrollUpButton';

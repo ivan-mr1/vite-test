@@ -18,7 +18,7 @@ npm-debug.log*
 *.log
 
 # Выходные файлы
-dist
+# dist
 build
 coverage
 
