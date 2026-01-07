@@ -19,27 +19,37 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint . --fix --no-cache --max-warnings=0"
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
     ],
     "*.{css,scss}": [
-      "stylelint \"**/*.{css,scss}\" --fix  --no-cache --max-warnings=0"
+      "stylelint --fix --max-warnings=0",
+      "prettier --write"
     ],
-    "*.{js,json,css,scss,md}": [
-      "prettier . --write"
+    "*.{json,md}": [
+      "prettier --write"
     ]
   },
   "devDependencies": {
     "@eslint/js": "9.39.2",
     "autoprefixer": "10.4.23",
+    "deepmerge": "4.2.2",
+    "defu": "6.0.0",
     "eslint": "9.39.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "glob": "13.0.0",
     "globals": "17.0.0",
     "husky": "9.1.7",
+    "is-url": "1.2.4",
     "lint-staged": "16.2.7",
     "npm-run-all": "4.1.5",
     "postcss-pxtorem": "6.1.0",
+    "posthtml": "0.16.6",
+    "posthtml-expressions": "1.11.4",
+    "posthtml-extend": "0.6.5",
+    "posthtml-fetch": "4.0.3",
+    "posthtml-parser": "0.12.1",
     "prettier": "3.7.4",
     "sass": "1.97.1",
     "sharp": "0.34.5",
@@ -48,11 +58,9 @@
     "stylelint-order": "7.0.1",
     "stylelint-scss": "6.14.0",
     "stylelint-selector-bem-pattern": "4.0.1",
-    "svgo": "4.0.0",
     "vite": "7.3.0",
     "vite-plugin-image-optimizer": "2.0.3",
-    "vite-plugin-sass-glob-import": "6.0.2",
-    "vite-plugin-svg-icons": "2.0.1"
+    "vite-plugin-sass-glob-import": "6.0.2"
   },
   "browserslist": [
     "last 5 versions"

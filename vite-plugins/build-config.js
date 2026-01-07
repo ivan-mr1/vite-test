@@ -3,7 +3,8 @@ import { sync } from 'glob';
 export const buildConfig = {
   rollupOptions: {
     // Автоматический поиск всех HTML файлов в src
-    input: sync('src/**/*.html'.replace(/\\/g, '/')),
+    // input: sync('src/**/*.html'.replace(/\\/g, '/')),
+    input: sync('src/**/!(_)*.html'.replace(/\\/g, '/')),
     output: {
       // Распределение файлов по папкам: css, js, assets
       assetFileNames: (assetInfo) => {

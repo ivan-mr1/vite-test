@@ -1,35 +1,6 @@
 <!doctype html>
 <html lang="uk">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Магазин сучасної оптики: широкий вибір стильних оправ, сонцезахисних окулярів та контактних лінз. Професійна перевірка зору та виготовлення окулярів будь-якої складності."
-    />
-
-    <title>Оптика — Магазин окулярів та аксесуарів | Перевірка зору</title>
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/img/favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/img/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/img/favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="assets/img/favicon/site.webmanifest" />
-    <link rel="stylesheet" href="styles/main.scss" />
-    <script type="module" src="js/app.js"></script>
-  </head>
+  <include src="@includes/_head.html"></include>
 
   <body>
     <div class="wrapper">
@@ -55,238 +26,21 @@
                 </li>
               </ul>
               <div class="header__soc1al soc1al visible-mobile">
-                <ul class="soc1al__list">
-                  <li class="soc1al__item">
-                    <a
-                      href="https://t.me/Optikaonline"
-                      class="soc1al__link"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Telegram"
-                      title="Telegram"
-                    >
-                      <svg class="svg">
-                        <use xlink:href="#icon-colored-telegram"></use>
-                      </svg>
-                    </a>
-                  </li>
-                  <li class="soc1al__item">
-                    <a
-                      href="https://wa.me/380974501872"
-                      class="soc1al__link"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="whatsapp"
-                      title="whatsapp"
-                    >
-                      <svg class="svg">
-                        <use xlink:href="#icon-colored-whatsapp"></use>
-                      </svg>
-                    </a>
-                  </li>
-                  <li class="soc1al__item">
-                    <a
-                      href="https://www.instagram.com/optica.ukraine.online/"
-                      class="soc1al__link"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Instagram"
-                      title="Instagram"
-                    >
-                      <svg class="svg">
-                        <use xlink:href="#icon-colored-instagram"></use>
-                      </svg>
-                    </a>
-                  </li>
-                </ul>
+                <include src="@components/soc1al/_soc1al.html"></include>
               </div>
             </nav>
             <div class="header__actions">
-              <div
-                data-favorite
-                class="header__action header__favorite favorite"
-              >
-                <button
-                  data-favorite-btn
-                  type="button"
-                  class="favorite-btn counter-icon"
-                  aria-label="Open favorite"
-                  title="Open favorite"
-                >
-                  <span class="counter-icon__inner">
-                    <svg class="svg svg--40">
-                      <use xlink:href="#icon-monochrome-favorite"></use>
-                    </svg>
-                    <span data-favorite-counter class="counter-icon__count"
-                      >0</span
-                    >
-                  </span>
-                </button>
-                <div class="favorite__content">
-                  <ul data-favorite-list class="favorite__list"></ul>
-                  <div class="favorite__bottom">
-                    <div class="favorite__fullprice-inner">
-                      <span>Разом:</span>
-                      <span class="favorite__fullprice">5680 грн</span>
-                    </div>
-                    <a href="cart.html" class="favorite__btn button button--min"
-                      >кошик</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <a
-                href="cart.html"
-                class="header__action header__cart counter-icon"
-                aria-label="Open cart"
-                title="Open cart"
-              >
-                <span class="counter-icon__inner">
-                  <svg class="svg svg--40">
-                    <use xlink:href="#icon-monochrome-cart"></use>
-                  </svg>
-                  <span data-cart-counter class="counter-icon__count">0</span>
-                </span>
-              </a>
+              <include src="@shop/favorite/_favorite.html"></include>
+              <include src="@shop/cart/_cart-header.html"></include>
             </div>
           </div>
-          <button
-            type="button"
-            class="header__burger-button burger-button"
-            data-header-burger-btn
-            aria-expanded="false"
-            aria-label="Open or close menu"
-            title="Open or close menu"
-          >
-            <span class="burger-button__inner">
-              <span class="burger-button__line"></span>
-              <span class="burger-button__line"></span>
-              <span class="burger-button__line"></span>
-            </span>
-          </button>
+          <include src="@components/header/_burger-button.html"></include>
         </div>
       </header>
       <main class="page">
-        <section class="cart">
-          <div class="cart__container">
-            <h1 class="cart__title title">Ваш кошик</h1>
-            <h2 class="visually-hidden">Ваш кошик</h2>
-            <div class="cart__wrapper">
-              <div class="cart__content">
-                <ul class="cart__list" data-cart-list></ul>
-              </div>
-              <div class="cart__summary summary">
-                <h2 class="summary__title">Підсумок замовлення</h2>
-                <div class="summary__top">
-                  <div class="summary__row">
-                    <div>Товари</div>
-                    <div data-cart-counter class="summary__conter-items">0</div>
-                    <div>шт</div>
-                  </div>
-                  <div class="summary__row">
-                    <div>Доставка</div>
-                    <div class="summary__right">За тарифами перевізника</div>
-                  </div>
-                </div>
-                <div class="summary__total">
-                  <div>Загальна сума:</div>
-                  <div data-cart-total-price class="summary__total-price"></div>
-                </div>
-                <button
-                  type="button"
-                  class="summary__button button button--card"
-                >
-                  ОФОРМИТИ ЗАМОВЛЕННЯ
-                </button>
-                <a href="index.html" class="summary__link-back"
-                  >Повернутися до покупок</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
+        <include src="@shop/cart/_cart.html"></include>
       </main>
-      <footer id="footer" class="footer">
-        <div class="footer__container">
-          <div class="footer__header">
-            <h2 class="footer__title">Будемо раді вашому зверненню</h2>
-            <div class="footer__text">
-              Звʼяжіться з нами будь-яким зручним для вас способом:
-            </div>
-          </div>
-          <div class="footer__wrapper">
-            <div class="footer__soc1al soc1al">
-              <ul class="soc1al__list">
-                <li class="soc1al__item">
-                  <a
-                    href="https://t.me/Optikaonline"
-                    class="soc1al__link"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="Telegram"
-                    title="Telegram"
-                  >
-                    <svg class="svg">
-                      <use xlink:href="#icon-colored-telegram"></use>
-                    </svg>
-                  </a>
-                </li>
-                <li class="soc1al__item">
-                  <a
-                    href="https://wa.me/380974501872"
-                    class="soc1al__link"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="whatsapp"
-                    title="whatsapp"
-                  >
-                    <svg class="svg">
-                      <use xlink:href="#icon-colored-whatsapp"></use>
-                    </svg>
-                  </a>
-                </li>
-                <li class="soc1al__item">
-                  <a
-                    href="https://www.instagram.com/optica.ukraine.online/"
-                    class="soc1al__link"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="Instagram"
-                    title="Instagram"
-                  >
-                    <svg class="svg">
-                      <use xlink:href="#icon-colored-instagram"></use>
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <ul class="footer__contacts">
-              <li class="footer__item">
-                <div class="footer__link-icon">
-                  <svg class="svg svg--20 footer__link-img">
-                    <use xlink:href="#icon-monochrome-phone"></use>
-                  </svg>
-                </div>
-                <a href="tel:+380974501872" class="footer__link"
-                  ><span class="hover-link">+38(097) 450 18 72</span></a
-                >
-              </li>
-              <li class="footer__item">
-                <div class="footer__link-icon">
-                  <svg class="svg svg--20 footer__link-img">
-                    <use xlink:href="#icon-monochrome-phone"></use>
-                  </svg>
-                </div>
-                <a href="tel:+380662303368" class="footer__link"
-                  ><span class="hover-link">+38(066) 230 33 68</span></a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <include src="@includes/_footer.html"></include>
     </div>
   </body>
 </html>
