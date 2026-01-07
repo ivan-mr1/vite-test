@@ -1,111 +1,115 @@
-import fs from 'fs'; // работа с файловой системой
-import path from 'path'; // работа с путями файлов
-import posthtml from 'posthtml'; // PostHTML для обработки HTML
-import { parser } from 'posthtml-parser'; // парсер HTML в дерево PostHTML
-import { match } from 'posthtml/lib/api'; // функция для поиска узлов в дереве
-import expressions from 'posthtml-expressions'; // плагин для выражений в HTML
-import replaceAliases from './aliases.js'; // функция замены алиасов в путях
+import fs from 'fs';
+import path from 'path';
+import { parser } from 'posthtml-parser';
+import { match } from 'posthtml/lib/api';
+import replaceAliases from './aliases.js';
+import utils from './utils.js';
+import {
+  DEFAULT_ENCODING,
+  DEFAULT_EXPRESSIONS_DELIMITERS,
+} from './constPostHtml.js';
 
-// Плагин для обработки <include> тегов
 export default (options = {}) => {
-  let {
-    root = './', // корневая директория для include
-    encoding = 'utf-8', // кодировка файлов
-    posthtmlExpressionsOptions = { locals: false }, // опции для posthtml-expressions
+  const {
+    root = './',
+    encoding = DEFAULT_ENCODING,
+    posthtmlExpressionsOptions = { locals: {} },
   } = options;
 
   return function posthtmlInclude(tree) {
-    tree.parser = tree.parser || parser; // назначаем парсер
-    tree.match = tree.match || match; // назначаем match
+    const currentParser = tree.parser || parser;
+    const currentMatch = tree.match || match;
+    const logger = options.logger || console;
 
-    // Проходим по всем узлам с атрибутами
-    tree.match({ attrs: true }, (node) => {
-      if (!node.attrs) {
+    currentMatch.call(tree, { tag: 'include' }, (node) => {
+      // 1. Обработка атрибутов и получение пути
+      const src = processAttributes(node.attrs);
+      if (!src) {
         return node;
-      } // если нет атрибутов, ничего не делаем
-
-      const prependDot = false;
-      const src = processAttributes(node.attrs, prependDot); // заменяем алиасы в атрибутах
-
-      if (node.tag === 'include' && src) {
-        let resolvedSrc = src;
-        try {
-          const rootBase = path.basename(root || '');
-          // если include внутри папки includes, убираем префикс
-          if (
-            typeof resolvedSrc === 'string' &&
-            resolvedSrc.startsWith('includes/') &&
-            rootBase === 'includes'
-          ) {
-            resolvedSrc = resolvedSrc.replace(/^includes\//, '');
-          }
-        } catch {
-          console.log('error include'); // ошибка обработки пути
-        }
-
-        const filePath = path.resolve(root, resolvedSrc); // абсолютный путь к файлу
-        let source = fs.readFileSync(filePath, encoding); // читаем файл
-
-        const exprOptions = {
-          ...posthtmlExpressionsOptions,
-          ...(options.delimiters && { delimiters: options.delimiters }), // задаем кастомные delimiters
-        };
-
-        try {
-          // Если есть locals в атрибутах или в контенте узла, парсим их
-          const localsRaw =
-            node.attrs.locals ||
-            (node.content ? node.content.join('').replace(/\n/g, '') : false);
-          if (localsRaw) {
-            const localsJson = JSON.parse(localsRaw);
-            exprOptions.locals = exprOptions.locals
-              ? { ...exprOptions.locals, ...localsJson }
-              : localsJson;
-          }
-        } catch {
-          console.log('error include 2'); // ошибка парсинга locals
-        }
-
-        // Если есть locals, обрабатываем контент через expressions
-        if (exprOptions.locals) {
-          source = posthtml()
-            .use(expressions(exprOptions))
-            .process(source, { sync: true }).html;
-        }
-
-        const subtree = tree.parser(source); // парсим содержимое файла в дерево
-        Object.assign(subtree, {
-          match: tree.match,
-          parser: tree.parser,
-          messages: tree.messages,
-        });
-
-        // Рекурсивно обрабатываем include внутри include
-        const content = source.includes('include')
-          ? posthtmlInclude(subtree)
-          : subtree;
-
-        // Отмечаем зависимость файла
-        tree.messages.push({ type: 'dependency', file: filePath });
-
-        return { tag: false, content }; // возвращаем содержимое вместо тега
       }
 
-      return node;
+      let resolvedSrc = src;
+      // Упрощённая логика резолва (избегаем дублирования папки includes)
+      const rootBase = path.basename(root);
+      if (rootBase === 'includes' && resolvedSrc.startsWith('includes/')) {
+        resolvedSrc = resolvedSrc.replace(/^includes\//, '');
+      }
+
+      const filePath = path.resolve(root, resolvedSrc);
+
+      if (!fs.existsSync(filePath)) {
+        console.warn(`[posthtml-include] File not found: ${filePath}`);
+        return node;
+      }
+
+      let source = fs.readFileSync(filePath, encoding);
+
+      // 2. Сбор locals (из атрибутов или тела тега)
+      let locals = { ...posthtmlExpressionsOptions.locals };
+
+      try {
+        const rawLocals =
+          node.attrs.locals ||
+          (node.content
+            ? node.content
+                .filter((i) => typeof i === 'string')
+                .join('')
+                .trim()
+            : '');
+
+        if (rawLocals) {
+          locals = { ...locals, ...JSON.parse(rawLocals) };
+        }
+      } catch {
+        console.warn(
+          `[posthtml-include] Failed to parse locals in ${resolvedSrc}`,
+        );
+      }
+
+      // 3. Обработка выражений внутри инклюда — выполняем всегда, безопасно
+      const exprOptions = {
+        ...posthtmlExpressionsOptions,
+        locals,
+        delimiters:
+          options.delimiters ||
+          posthtmlExpressionsOptions.delimiters ||
+          DEFAULT_EXPRESSIONS_DELIMITERS,
+      };
+
+      source = utils.applyExpressions(source, exprOptions, true);
+
+      // 4. Формирование поддерева
+      const subtree = currentParser(source);
+      // Передаем системные свойства для рекурсии
+      subtree.messages = tree.messages || [];
+
+      // Рекурсивный вызов для вложенных include — проверяем AST
+      const hasNested = utils.hasTag(subtree, 'include');
+      const finalContent = hasNested ? posthtmlInclude(subtree) : subtree;
+
+      // Регистрация зависимости для HMR
+      utils.addDependency(tree, filePath);
+      logger.debug && logger.debug(`[posthtml-include] included ${filePath}`);
+
+      return { tag: false, content: finalContent };
     });
 
     return tree;
   };
 };
 
-// Обрабатывает атрибуты узла, заменяет алиасы и возвращает src
-const processAttributes = (attrs, prependDot) => {
+const processAttributes = (attrs) => {
   let src = false;
-  for (const [attr, value] of Object.entries(attrs || {})) {
+  if (!attrs) {
+    return src;
+  }
+
+  for (const [attr, value] of Object.entries(attrs)) {
     if (typeof value === 'string') {
-      attrs[attr] = replaceAliases(value, { prependDot }); // заменяем алиасы
-      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http')) {
-        src = attrs[attr]; // возвращаем путь к локальному файлу
+      const replaced = replaceAliases(value);
+      attrs[attr] = replaced;
+      if (['src', 'url'].includes(attr) && !replaced.startsWith('http')) {
+        src = replaced;
       }
     }
   }

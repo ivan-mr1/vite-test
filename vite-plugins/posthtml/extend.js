@@ -6,83 +6,142 @@ import expressions from 'posthtml-expressions';
 import { match } from 'posthtml/lib/api';
 import merge from 'deepmerge';
 import replaceAliases from './aliases.js';
+import { DEFAULT_ENCODING, DEFAULT_EXTEND_TAG } from './constPostHtml.js';
 
-// Ошибки для удобства
 const errors = {
   EXTENDS_NO_SRC: '<extends> has no "src"',
   BLOCK_NO_NAME: '<block> has no "name"',
   UNEXPECTED_BLOCK: 'Unexpected block "%s"',
 };
 
-// Основной плагин PostHTML для <extends>
-const extend =
-  (options = {}) =>
-  (tree) => {
-    // Устанавливаем опции по умолчанию
-    options.encoding = options.encoding || 'utf8';
-    options.root = options.root || './';
-    options.plugins = options.plugins || [];
-    options.strict = Object.prototype.hasOwnProperty.call(options, 'strict')
-      ? Boolean(options.strict)
-      : true;
-    options.slotTagName = options.slotTagName || 'block'; // тег для слотов
-    options.fillTagName = options.fillTagName || 'block'; // тег для подстановки контента
-    options.tagName = options.tagName || 'extends'; // тег для расширения
-    options.expressions = options.expressions || { locals: {} };
-
-    // Обрабатываем все <extends> внутри дерева
-    tree = handleExtendsNodes(tree, options, tree.messages);
-
-    // Преобразуем все блоки в окончательное состояние
-    const blockNodes = getBlockNodes(options.slotTagName, tree);
-    for (const blockName of Object.keys(blockNodes)) {
-      const blockNodeList = blockNodes[blockName];
-      for (const blockNode of blockNodeList) {
-        blockNode.tag = false; // убираем тег, оставляем только контент
-        blockNode.content = blockNode.content || [];
-      }
-      blockNodes[blockName] = blockNodeList;
-    }
-
-    return tree;
-  };
-
-// Обрабатывает атрибуты узла, заменяя алиасы
-const processAttributes = (attrs, prependDot) => {
-  let src = false;
-  for (const [attr, value] of Object.entries(attrs || {})) {
-    if (typeof value === 'string') {
-      attrs[attr] = replaceAliases(value, { prependDot }); // заменяем алиасы
-      if (['src', 'url'].includes(attr) && !attrs[attr].startsWith('http')) {
-        src = attrs[attr]; // возвращаем путь для локальных ресурсов
-      }
-    }
-  }
-  return src;
+// Вспомогательная функция: Применяет массив плагинов к дереву
+const applyPluginsToTree = (tree, plugins) => {
+  return plugins.reduce((currTree, plugin) => plugin(currTree), tree);
 };
 
-// Рекурсивно обрабатывает все <extends> в дереве
+// Вспомогательная функция: Формирует объект ошибки
+const getError = (...rest) => new Error('[posthtml-extend] ' + format(...rest));
+
+// Определяет тип блока (replace, prepend, append)
+const getBlockType = (blockNode) => {
+  let blockType = (blockNode.attrs && blockNode.attrs.type) || 'replace';
+  blockType = blockType.toLowerCase();
+  return ['replace', 'prepend', 'append'].includes(blockType)
+    ? blockType
+    : 'replace';
+};
+
+// Добавляет блок в коллекцию (ИСПРАВЛЕНО: проверка на !blockNodes[name])
+const appendBlockNode = (blockNodes, node) => {
+  const { name } = node.attrs;
+  if (!blockNodes[name]) {
+    blockNodes[name] = [node];
+  } else {
+    blockNodes[name].push(node);
+  }
+};
+
+// Получает все блоки из контента
+const getBlockNodes = (tag, content = []) => {
+  const blockNodes = {};
+  match.call(content, { tag }, (node) => {
+    if (!node.attrs || !node.attrs.name) {
+      throw getError(errors.BLOCK_NO_NAME);
+    }
+    appendBlockNode(blockNodes, node);
+    return node;
+  });
+  return blockNodes;
+};
+
+// Объединяет контент
+const mergeContent = (
+  extendBlockContent = [],
+  layoutBlockContent = [],
+  extendBlockType,
+) => {
+  switch (extendBlockType) {
+    case 'replace':
+      return extendBlockContent;
+    case 'prepend':
+      return [...extendBlockContent, ...layoutBlockContent];
+    case 'append':
+      return [...layoutBlockContent, ...extendBlockContent];
+    default:
+      return layoutBlockContent;
+  }
+};
+
+const mergeExtendsAndLayout = (
+  layoutTree,
+  extendsNode,
+  strictNames,
+  slotTagName,
+  fillTagName,
+) => {
+  const layoutBlockNodes = getBlockNodes(slotTagName, layoutTree);
+  const extendsBlockNodes = getBlockNodes(fillTagName, extendsNode.content);
+
+  for (const name of Object.keys(layoutBlockNodes)) {
+    const extendsBlockList = extendsBlockNodes[name];
+    if (!extendsBlockList) {
+      continue;
+    }
+
+    const lastExtendsBlock = extendsBlockList[extendsBlockList.length - 1];
+    if (!lastExtendsBlock) {
+      continue;
+    }
+
+    for (const layoutBlock of layoutBlockNodes[name]) {
+      layoutBlock.content = mergeContent(
+        lastExtendsBlock.content,
+        layoutBlock.content,
+        getBlockType(lastExtendsBlock),
+      );
+    }
+    delete extendsBlockNodes[name];
+  }
+
+  if (strictNames && Object.keys(extendsBlockNodes).length > 0) {
+    throw getError(errors.UNEXPECTED_BLOCK, Object.keys(extendsBlockNodes)[0]);
+  }
+
+  return layoutTree;
+};
+
 function handleExtendsNodes(tree, options, messages) {
-  match.call(
-    (tree = applyPluginsToTree(tree, options.plugins)),
+  return match.call(
+    applyPluginsToTree(tree, options.plugins),
     { tag: options.tagName },
     (extendsNode) => {
-      const prependDot = false;
-      extendsNode.attrs.src = processAttributes(extendsNode.attrs, prependDot);
-
-      if (!extendsNode.attrs || !extendsNode.attrs.src) {
-        throw getError(errors.EXTENDS_NO_SRC); // проверка наличия src
-      }
-      let locals = {};
-      if (extendsNode.attrs.locals) {
-        try {
-          locals = JSON.parse(extendsNode.attrs.locals); // читаем локальные переменные
-        } catch {
-          console.error('extend.js handleExtendsNodes');
+      // Обработка атрибутов
+      let src = false;
+      for (const [attr, value] of Object.entries(extendsNode.attrs || {})) {
+        if (typeof value === 'string') {
+          extendsNode.attrs[attr] = replaceAliases(value);
+          if (
+            ['src', 'url'].includes(attr) &&
+            !extendsNode.attrs[attr].startsWith('http')
+          ) {
+            src = extendsNode.attrs[attr];
+          }
         }
       }
 
-      // Подключаем expressions с локальными переменными
+      if (!src) {
+        throw getError(errors.EXTENDS_NO_SRC);
+      }
+
+      let locals = {};
+      try {
+        if (extendsNode.attrs.locals) {
+          locals = JSON.parse(extendsNode.attrs.locals);
+        }
+      } catch {
+        console.error(`[posthtml-extend] JSON error in ${src}`);
+      }
+
       const plugins = [
         ...options.plugins,
         expressions({
@@ -91,16 +150,15 @@ function handleExtendsNodes(tree, options, messages) {
         }),
       ];
 
-      // Читаем родительский HTML
-      const layoutPath = path.resolve(options.root, extendsNode.attrs.src);
+      const layoutPath = path.resolve(options.root, src);
       const layoutHtml = fs.readFileSync(layoutPath, options.encoding);
+
       const layoutTree = handleExtendsNodes(
         applyPluginsToTree(parseToPostHtml(layoutHtml), plugins),
         options,
         messages,
       );
 
-      // Объединяем контент родителя и дочернего узла
       extendsNode.tag = false;
       extendsNode.content = mergeExtendsAndLayout(
         layoutTree,
@@ -109,134 +167,41 @@ function handleExtendsNodes(tree, options, messages) {
         options.slotTagName,
         options.fillTagName,
       );
-      messages.push({
-        type: 'dependency',
-        file: layoutPath,
-        from: options.from,
-      });
 
+      messages.push({ type: 'dependency', file: layoutPath });
       return extendsNode;
     },
   );
-
-  return tree;
 }
 
-// Применяет массив плагинов к дереву PostHTML
-function applyPluginsToTree(tree, plugins) {
-  return plugins.reduce((tree, plugin) => {
-    tree = plugin(tree);
-    return tree;
-  }, tree);
-}
+const extend =
+  (options = {}) =>
+  (tree) => {
+    const opts = {
+      encoding: DEFAULT_ENCODING,
+      root: './',
+      plugins: [],
+      strict: true,
+      slotTagName: 'block',
+      fillTagName: 'block',
+      tagName: DEFAULT_EXTEND_TAG,
+      expressions: { locals: {} },
+      ...options,
+    };
 
-// Объединяет контент родительского шаблона и дочернего <extends>
-function mergeExtendsAndLayout(
-  layoutTree,
-  extendsNode,
-  strictNames,
-  slotTagName,
-  fillTagName,
-) {
-  const layoutBlockNodes = getBlockNodes(slotTagName, layoutTree);
-  const extendsBlockNodes = getBlockNodes(fillTagName, extendsNode.content);
+    const messages = tree.messages || [];
+    const processedTree = handleExtendsNodes(tree, opts, messages);
 
-  for (const layoutBlockName of Object.keys(layoutBlockNodes)) {
-    const extendsBlockNodeList = extendsBlockNodes[layoutBlockName];
-    if (!extendsBlockNodeList) {
-      continue;
-    }
+    // Финальная очистка блочных тегов
+    const finalBlocks = getBlockNodes(opts.slotTagName, processedTree);
+    Object.values(finalBlocks)
+      .flat()
+      .forEach((node) => {
+        node.tag = false;
+      });
 
-    const extendsBlockNode =
-      extendsBlockNodeList[extendsBlockNodeList.length - 1];
-    if (!extendsBlockNode) {
-      continue;
-    }
+    processedTree.messages = messages;
+    return processedTree;
+  };
 
-    const layoutBlockNodeList = layoutBlockNodes[layoutBlockName];
-    for (const layoutBlockNode of layoutBlockNodeList) {
-      layoutBlockNode.content = mergeContent(
-        extendsBlockNode.content,
-        layoutBlockNode.content,
-        getBlockType(extendsBlockNode),
-      ); // объединяем контент по типу блока
-    }
-
-    delete extendsBlockNodes[layoutBlockName]; // удаляем обработанные блоки
-  }
-
-  if (strictNames) {
-    for (const extendsBlockName of Object.keys(extendsBlockNodes)) {
-      throw getError(errors.UNEXPECTED_BLOCK, extendsBlockName); // проверка на неожиданные блоки
-    }
-  }
-
-  return layoutTree;
-}
-
-// Объединяет массивы контента в зависимости от типа блока (replace, prepend, append)
-function mergeContent(extendBlockContent, layoutBlockContent, extendBlockType) {
-  extendBlockContent = extendBlockContent || [];
-  layoutBlockContent = layoutBlockContent || [];
-
-  switch (extendBlockType) {
-    case 'replace':
-      layoutBlockContent = extendBlockContent;
-      break;
-    case 'prepend':
-      layoutBlockContent = extendBlockContent.concat(layoutBlockContent);
-      break;
-    case 'append':
-      layoutBlockContent = layoutBlockContent.concat(extendBlockContent);
-      break;
-    default:
-      break;
-  }
-
-  return layoutBlockContent;
-}
-
-// Определяет тип блока (replace, prepend, append)
-function getBlockType(blockNode) {
-  let blockType = (blockNode.attrs && blockNode.attrs.type) || '';
-  blockType = blockType.toLowerCase();
-  if (!['replace', 'prepend', 'append'].includes(blockType)) {
-    blockType = 'replace';
-  }
-  return blockType;
-}
-
-// Получает все блоки с указанным тегом из дерева
-function getBlockNodes(tag, content = []) {
-  const blockNodes = {};
-
-  match.call(content, { tag }, (node) => {
-    if (!node.attrs || !node.attrs.name) {
-      throw getError(errors.BLOCK_NO_NAME); // проверка наличия имени блока
-    }
-
-    appendBlockNode(blockNodes, node); // добавляем блок в коллекцию
-    return node;
-  });
-
-  return blockNodes;
-}
-
-// Добавляет блок в объект блоков по имени
-function appendBlockNode(blockNodes, node) {
-  const { name } = node.attrs;
-  if (blockNodes[name] === null) {
-    blockNodes[name] = [node];
-  } else {
-    blockNodes[name].push(node);
-  }
-  return blockNodes;
-}
-
-// Формирует объект ошибки с префиксом [posthtml-extend]
-function getError(...rest) {
-  const message = format(...rest);
-  return new Error('[posthtml-extend] ' + message);
-}
-
-export default extend; // экспорт плагина
+export default extend;
