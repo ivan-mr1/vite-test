@@ -1,74 +1,67 @@
 import templateCfg from '../../template.config.js';
+import utils from './utils.js';
 
-const replaceAliases = (
-  data,
-  {
+const replaceAliases = (data, options = {}) => {
+  const {
     prependDot = false,
     normalizePath = true,
+    stripSrcPrefix = true,
     sortAliases = true,
     preserveOriginal = true,
     transformReplacement,
-  } = {},
-) => {
+  } = options;
+
   const aliases = templateCfg.aliases || {};
 
   if (preserveOriginal && Object.keys(aliases).length === 0) {
     return data;
   }
+
   const escapeRegExp = (string) =>
     string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+  // Обработка строк
   if (typeof data === 'string') {
     let result = data;
+
     const sortedAliases = sortAliases
       ? Object.keys(aliases).sort((a, b) => b.length - a.length)
       : Object.keys(aliases);
 
     sortedAliases.forEach((alias) => {
-      const regex = new RegExp(escapeRegExp(alias), 'g');
-      if (result.match(regex)) {
+      if (result.includes(alias)) {
         let replacement = aliases[alias];
+
         if (prependDot) {
           replacement = `.${replacement}`;
         }
         if (typeof transformReplacement === 'function') {
           replacement = transformReplacement(replacement, alias);
         }
+
+        const regex = new RegExp(escapeRegExp(alias), 'g');
         result = result.replace(regex, replacement);
       }
     });
+
     if (normalizePath && !result.startsWith('http')) {
-      result = result.replace(/\/+/g, '/');
+      result = utils.normalizePath(result, { stripSrcPrefix });
     }
-    const src = new RegExp('src/', 'g');
-    result = result.includes('src/') ? result.replace(src, '') : result;
 
     return result;
   }
 
+  // Рекурсия для массивов
   if (Array.isArray(data)) {
-    return data.map((item) =>
-      replaceAliases(item, {
-        prependDot,
-        normalizePath,
-        sortAliases,
-        preserveOriginal,
-        transformReplacement,
-      }),
-    );
+    return data.map((item) => replaceAliases(item, options));
   }
 
-  if (data && typeof data === 'object') {
+  // Рекурсия для объектов
+  if (data !== null && typeof data === 'object') {
     return Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,
-        replaceAliases(value, {
-          prependDot,
-          normalizePath,
-          sortAliases,
-          preserveOriginal,
-          transformReplacement,
-        }),
+        replaceAliases(value, options),
       ]),
     );
   }
