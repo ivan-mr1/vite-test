@@ -6,6 +6,7 @@ import posthtmlInclude from './include.js';
 import posthtmlFetch from './fetch.js';
 import { ALTERNATE_EXPRESSIONS_DELIMITERS } from './constPostHtml.js';
 import { dirname } from 'path';
+import templateConfig from '../../template.config.js';
 
 const name = 'PostHTMLPreUse';
 
@@ -60,14 +61,20 @@ export default (pluginOptions = {}) => {
         const plugins = [];
 
         // Собираем стек плагинов
+        const aliases = opts.aliases || templateConfig.aliases || {};
+
         if (opts.extend) {
-          plugins.push(posthtmlExtend({ root, logger, ...opts.extend }));
+          plugins.push(
+            posthtmlExtend({ root, logger, aliases, ...opts.extend }),
+          );
         }
         if (opts.include) {
-          plugins.push(posthtmlInclude({ root, logger, ...opts.include }));
+          plugins.push(
+            posthtmlInclude({ root, logger, aliases, ...opts.include }),
+          );
         }
         if (opts.fetch) {
-          plugins.push(posthtmlFetch({ root, logger, ...opts.fetch }));
+          plugins.push(posthtmlFetch({ root, logger, aliases, ...opts.fetch }));
         }
         if (opts.expressions) {
           plugins.push(posthtmExpressions({ root, ...opts.expressions }));

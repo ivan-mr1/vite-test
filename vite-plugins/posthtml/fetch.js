@@ -33,7 +33,7 @@ export default (options = {}) =>
       }
 
       // Применяем алиасы к URL
-      rawUrl = replaceAliases(rawUrl);
+      rawUrl = replaceAliases(rawUrl, opts.aliases);
 
       let data;
       let filePath = null;
@@ -58,7 +58,7 @@ export default (options = {}) =>
         }
 
         // Обработка данных через алиасы (если это объект/массив)
-        const locals = { response: replaceAliases(data) };
+        const locals = { response: data };
 
         // Рендерим внутренности тега с новыми данными
         if (node.content) {

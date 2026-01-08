@@ -31,7 +31,7 @@ const getBlockType = (blockNode) => {
     : 'replace';
 };
 
-// Добавляет блок в коллекцию (ИСПРАВЛЕНО: проверка на !blockNodes[name])
+// Добавляет блок в коллекцию
 const appendBlockNode = (blockNodes, node) => {
   const { name } = node.attrs;
   if (!blockNodes[name]) {
@@ -119,7 +119,7 @@ function handleExtendsNodes(tree, options, messages) {
       let src = false;
       for (const [attr, value] of Object.entries(extendsNode.attrs || {})) {
         if (typeof value === 'string') {
-          extendsNode.attrs[attr] = replaceAliases(value);
+          extendsNode.attrs[attr] = replaceAliases(value, options.aliases);
           if (
             ['src', 'url'].includes(attr) &&
             !extendsNode.attrs[attr].startsWith('http')

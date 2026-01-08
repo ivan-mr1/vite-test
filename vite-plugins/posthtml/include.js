@@ -19,21 +19,16 @@ export default (options = {}) => {
   return function posthtmlInclude(tree) {
     const currentParser = tree.parser || parser;
     const currentMatch = tree.match || match;
-    const logger = options.logger || console;
+    // const logger = options.logger || console;
 
     currentMatch.call(tree, { tag: 'include' }, (node) => {
       // 1. Обработка атрибутов и получение пути
-      const src = processAttributes(node.attrs);
+      const src = processAttributes(node.attrs, options.aliases);
       if (!src) {
         return node;
       }
 
       let resolvedSrc = src;
-      // Упрощённая логика резолва (избегаем дублирования папки includes)
-      const rootBase = path.basename(root);
-      if (rootBase === 'includes' && resolvedSrc.startsWith('includes/')) {
-        resolvedSrc = resolvedSrc.replace(/^includes\//, '');
-      }
 
       const filePath = path.resolve(root, resolvedSrc);
 
@@ -89,7 +84,8 @@ export default (options = {}) => {
 
       // Регистрация зависимости для HMR
       utils.addDependency(tree, filePath);
-      logger.debug && logger.debug(`[posthtml-include] included ${filePath}`);
+      // показывает в терминале
+      // logger.debug && logger.debug(`[posthtml-include] included ${filePath}`);
 
       return { tag: false, content: finalContent };
     });
@@ -98,7 +94,7 @@ export default (options = {}) => {
   };
 };
 
-const processAttributes = (attrs) => {
+const processAttributes = (attrs, aliases) => {
   let src = false;
   if (!attrs) {
     return src;
@@ -106,7 +102,7 @@ const processAttributes = (attrs) => {
 
   for (const [attr, value] of Object.entries(attrs)) {
     if (typeof value === 'string') {
-      const replaced = replaceAliases(value);
+      const replaced = replaceAliases(value, aliases);
       attrs[attr] = replaced;
       if (['src', 'url'].includes(attr) && !replaced.startsWith('http')) {
         src = replaced;

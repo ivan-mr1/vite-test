@@ -52,6 +52,7 @@
     "posthtml-parser": "0.12.1",
     "prettier": "3.7.4",
     "sass": "1.97.1",
+    "svgo": "^4.0.0",
     "sharp": "0.34.5",
     "stylelint": "16.26.1",
     "stylelint-config-standard-scss": "16.0.0",

@@ -1,7 +1,6 @@
-import templateCfg from '../../template.config.js';
 import utils from './utils.js';
 
-const replaceAliases = (data, options = {}) => {
+const replaceAliases = (data, aliases = {}, options = {}) => {
   const {
     prependDot = false,
     normalizePath = true,
@@ -10,8 +9,6 @@ const replaceAliases = (data, options = {}) => {
     preserveOriginal = true,
     transformReplacement,
   } = options;
-
-  const aliases = templateCfg.aliases || {};
 
   if (preserveOriginal && Object.keys(aliases).length === 0) {
     return data;
@@ -53,7 +50,7 @@ const replaceAliases = (data, options = {}) => {
 
   // Рекурсия для массивов
   if (Array.isArray(data)) {
-    return data.map((item) => replaceAliases(item, options));
+    return data.map((item) => replaceAliases(item, aliases, options));
   }
 
   // Рекурсия для объектов
@@ -61,7 +58,7 @@ const replaceAliases = (data, options = {}) => {
     return Object.fromEntries(
       Object.entries(data).map(([key, value]) => [
         key,
-        replaceAliases(value, options),
+        replaceAliases(value, aliases, options),
       ]),
     );
   }
