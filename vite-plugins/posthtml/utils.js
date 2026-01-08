@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises';
-
 import posthtml from 'posthtml';
 import expressions from 'posthtml-expressions';
 
